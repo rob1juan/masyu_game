@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/pages/game.dart';
 
 class LevelSelectionPage extends StatelessWidget {
   @override
@@ -23,6 +24,10 @@ class LevelSelectionPage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         // TODO: Implémenter la navigation vers le niveau 1
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GameBoard()),
+                        );
                       },
                       child: Text('Niveau 1'),
                     ),
