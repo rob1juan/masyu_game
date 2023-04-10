@@ -125,7 +125,7 @@ class _GameBoardState extends State<GameBoard> {
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: const Color.fromARGB(0, 0, 0, 0)),
-                            color: Color.fromARGB(255, 185, 78,
+                            color: Color.fromARGB(0, 185, 78,
                                 228), // Changez la couleur d'arrière-plan ici
                           ),
                           child: Stack(
