@@ -11,6 +11,7 @@ class GameBoard extends StatefulWidget {
 
 class _GameBoardState extends State<GameBoard> {
   final int taille = 8;
+  final GlobalKey _centerKey = GlobalKey();
   late Plateau plateau;
 
   bool _isDragging = false;
@@ -23,10 +24,28 @@ class _GameBoardState extends State<GameBoard> {
     plateau = Plateau(taille: taille);
   }
 
-  vector.Vector2 _touchPositionToGrid(Offset touchPosition, double gridSize) {
+  vector.Vector2? _touchPositionToGrid(Offset touchPosition, double gridSize) {
     int x = (touchPosition.dx / gridSize).floor();
     int y = (touchPosition.dy / gridSize).floor();
-    return vector.Vector2(x.toDouble(), y.toDouble());
+
+    if (x < 0 || x >= taille || y < 0 || y >= taille) {
+      return null;
+    }
+    return vector.Vector2(x.toDouble(), y.toDouble() + 1);
+  }
+
+  bool _isLineDiagonal(vector.Vector2 start, vector.Vector2 end) {
+    return start.x != end.x && start.y != end.y;
+  }
+
+  int _getLineIndex(vector.Vector2 start, vector.Vector2 end) {
+    for (int i = 0; i < lines.length - 1; i += 2) {
+      if ((lines[i] == start && lines[i + 1] == end) ||
+          (lines[i] == end && lines[i + 1] == start)) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   @override
@@ -36,81 +55,128 @@ class _GameBoardState extends State<GameBoard> {
         double gridSize = constraints.maxWidth / taille;
         return GestureDetector(
           onPanDown: (DragDownDetails details) {
-            RenderBox renderBox = context.findRenderObject() as RenderBox;
+            RenderBox renderBox =
+                _centerKey.currentContext!.findRenderObject() as RenderBox;
+            double verticalPadding =
+                (constraints.maxHeight - constraints.maxWidth) / 2;
             final touchPosition =
-                renderBox.globalToLocal(details.globalPosition);
+                renderBox.globalToLocal(details.globalPosition) -
+                    Offset(0, verticalPadding);
             _dragStart = _touchPositionToGrid(touchPosition, gridSize);
-            _isDragging = true;
+            if (_dragStart != null) {
+              _isDragging = true;
+            }
           },
           onPanUpdate: (DragUpdateDetails details) {
             if (_isDragging) {
-              RenderBox renderBox = context.findRenderObject() as RenderBox;
+              RenderBox renderBox =
+                  _centerKey.currentContext!.findRenderObject() as RenderBox;
+              double verticalPadding =
+                  (constraints.maxHeight - constraints.maxWidth) / 2;
               final touchPosition =
-                  renderBox.globalToLocal(details.globalPosition);
-              vector.Vector2 currentGridPos =
+                  renderBox.globalToLocal(details.globalPosition) -
+                      Offset(0, verticalPadding);
+              vector.Vector2? currentGridPos =
                   _touchPositionToGrid(touchPosition, gridSize);
 
-              if (currentGridPos != _dragStart) {
+              if (currentGridPos != null &&
+                  _dragStart != null &&
+                  currentGridPos != _dragStart &&
+                  !_isLineDiagonal(_dragStart!, currentGridPos)) {
                 setState(() {
-                  lines.add(_dragStart!);
-                  lines.add(currentGridPos);
+                  int lineIndex = _getLineIndex(_dragStart!, currentGridPos);
+                  if (lineIndex != -1) {
+                    lines.removeRange(lineIndex, lineIndex + 2);
+                  } else {
+                    lines.add(_dragStart!);
+                    lines.add(currentGridPos);
+                  }
                   _dragStart = currentGridPos;
                 });
               }
             }
           },
           onPanEnd: (DragEndDetails details) {
-            _isDragging = false;
+            if (_isDragging) {
+              _isDragging = false;
+            }
           },
-          child: Stack(
-            children: [
-              GridView.builder(
-                itemCount: taille * taille,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: taille,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  int x = index % taille;
-                  int y = index ~/ taille;
-                  Case currentCase = plateau.grille[y][x];
-                  return GestureDetector(
-                    onTap: () {
-                      // Implémentez la logique pour gérer les actions de l'utilisateur ici
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        color: currentCase.estCorrect
-                            ? Colors.green
-                            : Colors.white,
-                      ),
-                      child: Center(
-                        child: currentCase.cerclePlein
-                            ? CircleAvatar(backgroundColor: Colors.black)
-                            : currentCase.cercleVide
-                                ? Container(
-                                    width:
-                                        40, // ajustez la taille du cercle ici
-                                    height:
-                                        40, // ajustez la taille du cercle ici
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: Colors.black, width: 3),
-                                    ),
-                                  )
-                                : null,
-                      ),
+          child: Center(
+            key: _centerKey,
+            child: SizedBox(
+              width: constraints.maxWidth,
+              height: constraints.maxWidth + 100,
+              child: Stack(
+                children: [
+                  GridView.builder(
+                    itemCount: taille * taille,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: taille,
                     ),
-                  );
-                },
+                    itemBuilder: (BuildContext context, int index) {
+                      int x = index % taille;
+                      int y = index ~/ taille;
+                      Case currentCase = plateau.grille[y][x];
+                      return GestureDetector(
+                        onTap: () {
+                          // Implémentez la logique pour gérer les actions de l'utilisateur ici
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: const Color.fromARGB(0, 0, 0, 0)),
+                            color: Color.fromARGB(255, 185, 78,
+                                228), // Changez la couleur d'arrière-plan ici
+                          ),
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: currentCase.cerclePlein
+                                    ? CircleAvatar(
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 255, 255, 255))
+                                    : currentCase.cercleVide
+                                        ? Container(
+                                            width:
+                                                40, // ajustez la taille du cercle ici
+                                            height:
+                                                40, // ajustez la taille du cercle ici
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: const Color.fromARGB(
+                                                  0, 255, 255, 255),
+                                              border: Border.all(
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  width: 3),
+                                            ),
+                                          )
+                                        : null,
+                              ),
+                              Center(
+                                child: Container(
+                                  width: 8, // ajustez la taille du point ici
+                                  height: 8, // ajustez la taille du point ici
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white.withOpacity(
+                                        0.2), // réglez l'opacité ici
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  CustomPaint(
+                    size: Size(constraints.maxWidth, constraints.maxHeight),
+                    painter: LinePainter(lines: lines, gridSize: gridSize),
+                  ),
+                ],
               ),
-              CustomPaint(
-                size: Size(constraints.maxWidth, constraints.maxHeight),
-                painter: LinePainter(lines: lines, gridSize: gridSize),
-              ),
-            ],
+            ),
           ),
         );
       },
@@ -127,21 +193,21 @@ class LinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = const Color.fromARGB(255, 0, 0, 0)
-      ..strokeWidth = 5
+      ..color = Color.fromARGB(255, 255, 255, 255)
+      ..strokeWidth = 4
       ..strokeCap = StrokeCap.round;
 
     for (int i = 0; i < lines.length - 1; i += 2) {
       final start = Offset(lines[i].x * gridSize + gridSize / 2,
-          lines[i].y * gridSize + gridSize / 2);
+          lines[i].y * gridSize + gridSize / 4);
       final end = Offset(lines[i + 1].x * gridSize + gridSize / 2,
-          lines[i + 1].y * gridSize + gridSize / 2);
+          lines[i + 1].y * gridSize + gridSize / 4);
       canvas.drawLine(start, end, paint);
     }
   }
 
   @override
   bool shouldRepaint(covariant LinePainter oldDelegate) {
-    return true;
+    return oldDelegate.lines != lines;
   }
 }
