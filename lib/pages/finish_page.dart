@@ -21,7 +21,11 @@ class FinishPage extends StatelessWidget {
           fontSize: 16.0);
     } else {
       String message =
-          "Difficulté: Moyen\nGrille: 2\nTemps: 2min24\nEssaye de me battre ;)";
+          "Salut ! Voici le nouveau score que je viens de faire sur Masyu :\n"
+          "Difficulté : Moyen\n"
+          "Temps : 2min\n"
+          "Joueur : $playerName\n"
+          "Essaye de me battre ! ;))";
       FlutterClipboard.copy(message).then((value) => Fluttertoast.showToast(
           msg: "Message copié dans le presse-papier avec succès!",
           toastLength: Toast.LENGTH_LONG,
