@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:masyu_game/class/plateau.dart';
-import 'package:masyu_game/class/case.dart';
+import 'package:masyu_game/models/plateau.dart';
+import 'package:masyu_game/models/case.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class GameBoard extends StatefulWidget {

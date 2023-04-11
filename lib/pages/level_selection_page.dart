@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masyu_game/pages/game.dart';
+import 'package:masyu_game/widgets/game.dart';
 
 class LevelSelectionPage extends StatelessWidget {
   @override
