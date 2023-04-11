@@ -191,9 +191,9 @@ class LinePainter extends CustomPainter {
 
     for (int i = 0; i < lines.length - 1; i += 2) {
       final start = Offset(lines[i].x * gridSize + gridSize / 2,
-          lines[i].y * gridSize + gridSize / 4);
+          lines[i].y * gridSize - gridSize / 2);
       final end = Offset(lines[i + 1].x * gridSize + gridSize / 2,
-          lines[i + 1].y * gridSize + gridSize / 4);
+          lines[i + 1].y * gridSize - gridSize / 2);
       print('Drawing line from $start to $end');
       canvas.drawLine(start, end, paint);
     }
