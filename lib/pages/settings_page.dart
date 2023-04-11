@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 
-class DifficultySelectionPage extends StatelessWidget {
+class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,35 +10,26 @@ class DifficultySelectionPage extends StatelessWidget {
         children: BuildBasicLayout([
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LevelSelectionPage()),
-              );
+              Navigator.pop(context);
             },
-            child: Text('FACILE'),
-            style: SuccessButton,
+            child: Text('MUSIQUE'),
+            style: YellowButton,
           ),
           SizedBox(height: 50),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LevelSelectionPage()),
-              );
+              Navigator.pop(context);
             },
-            child: Text('MOYEN'),
+            child: Text('REGLES'),
             style: WarningButton,
           ),
           SizedBox(height: 50),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LevelSelectionPage()),
-              );
+              Navigator.pop(context);
             },
-            child: Text('DIFFICILE'),
-            style: DangerButton,
+            child: Text('A PROPOS'),
+            style: PrimaryButton,
           ),
           SizedBox(height: 75),
           ElevatedButton(

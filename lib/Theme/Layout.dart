@@ -26,6 +26,7 @@ List<Widget> BuildBasicLayout(List<Widget> children, bool showCredit) {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+            SizedBox(height: 50),
             Image.asset(
               'assets/logo.png',
               fit: BoxFit.contain,
