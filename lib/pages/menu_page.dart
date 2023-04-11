@@ -9,7 +9,7 @@ class MenuPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
-          SizedBox(height: 50),
+          SizedBox(height: 100),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
