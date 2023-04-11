@@ -1,107 +1,89 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:masyu_game/widgets/game.dart';
+=======
+import 'package:masyu_game/Theme/Buttons.dart';
+import 'package:masyu_game/Theme/Layout.dart';
+>>>>>>> a8202de71ef9e93690f90d69cbc9256e69503fa1
 
 class LevelSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset('assets/logo.png', height: 40),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Choix du niveau'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le niveau 1
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GameBoard()),
-                        );
-                      },
-                      child: Text('Niveau 1'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le niveau 2
-                      },
-                      child: Text('Niveau 2'),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le classement du niveau 1
-                      },
-                      child: Text('Classement'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le classement du niveau 2
-                      },
-                      child: Text('Classement'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le niveau 3
-                      },
-                      child: Text('Niveau 3'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le niveau 4
-                      },
-                      child: Text('Niveau 4'),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le classement du niveau 3
-                      },
-                      child: Text('Classement'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le classement du niveau 4
-                      },
-                      child: Text('Classement'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Retour'),
-            ),
-          ],
-        ),
+      body: Stack(
+        children: BuildBasicLayout([
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('NIVEAU 1'),
+                    style: PrimaryButton,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('NIVEAU 2'),
+                    style: PrimaryButton,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('NIVEAU 3'),
+                    style: PrimaryButton,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('NIVEAU 4'),
+                    style: PrimaryButton,
+                  ),
+                ],
+              ),
+              SizedBox(width: 10),
+              Column(
+                children: [
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Image.asset('assets/poduim.png'),
+                    style: ClassementButton,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Image.asset('assets/poduim.png'),
+                    style: ClassementButton,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Image.asset('assets/poduim.png'),
+                    style: ClassementButton,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Image.asset('assets/poduim.png'),
+                    style: ClassementButton,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 50),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('RETOUR'),
+            style: SecondaryButton,
+          ),
+          SizedBox(height: 100),
+        ], false),
       ),
     );
   }
