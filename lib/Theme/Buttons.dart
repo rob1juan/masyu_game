@@ -23,6 +23,17 @@ ButtonStyle SecondaryButton = ElevatedButton.styleFrom(
   textStyle: TextStyle(fontWeight: FontWeight.w700),
 );
 
+ButtonStyle ClassementButton = ElevatedButton.styleFrom(
+  backgroundColor: secondary,
+  minimumSize: Size(65, 65),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10),
+  ),
+  shadowColor: Colors.black,
+  elevation: 10.0,
+  textStyle: TextStyle(fontWeight: FontWeight.w700),
+);
+
 ButtonStyle YellowButton = ElevatedButton.styleFrom(
   backgroundColor: yellow,
   minimumSize: Size(225, 65),
