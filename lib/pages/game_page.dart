@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:masyu_game/widgets/game.dart';
+import 'package:masyu_game/pages/finish_page.dart';
+import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/Theme/Color.dart';
+import 'package:masyu_game/widgets/stopwatch_text.dart';
+import 'dart:async';
 
-class GamePage extends StatelessWidget {
+class GamePage extends StatefulWidget {
+  @override
+  _GamePageState createState() => _GamePageState();
+}
+
+class _GamePageState extends State<GamePage> {
+  Duration _elapsedTime = Duration.zero;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(children: [
       BackgroundGradient,
+      Positioned(
+        top: MediaQuery.of(context).padding.top + 10,
+        left: 10,
+        child: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LevelSelectionPage()),
+            );
+          },
+        ),
+      ),
       Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -23,10 +47,12 @@ class GamePage extends StatelessWidget {
             "Temps",
             style: TextStyle(color: Colors.white, fontSize: 24),
           ),
-          Text(
-            "59:39",
-            style: TextStyle(
-                color: Colors.white, fontSize: 36, fontWeight: FontWeight.bold),
+          StopwatchText(
+            onElapsedChanged: (elapsed) {
+              setState(() {
+                _elapsedTime = elapsed;
+              });
+            },
           ),
           Padding(
             padding: EdgeInsets.all(20.0),
@@ -43,14 +69,29 @@ class GamePage extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FinishPage(
+                    elapsedTime: _elapsedTime,
+                  ),
+                ),
+              );
+            },
             child: Text("Valider"),
             style: SuccessButton,
           ),
           SizedBox(height: 25),
-          Text(
-            "Recommencer",
-            style: TextStyle(color: Colors.white, fontSize: 16),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GamePage()),
+              );
+            },
+            child: Text("Recommencer"),
+            style: SecondaryButton,
           ),
         ],
       ))

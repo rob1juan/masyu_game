@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
+import 'package:masyu_game/pages/menu_page.dart';
 
 class DifficultySelectionPage extends StatelessWidget {
   @override
@@ -9,6 +10,7 @@ class DifficultySelectionPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
+          SizedBox(height: 100),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -44,7 +46,10 @@ class DifficultySelectionPage extends StatelessWidget {
           SizedBox(height: 75),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MenuPage()),
+              );
             },
             child: Text('RETOUR'),
             style: SecondaryButton,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,6 +7,9 @@ import 'package:clipboard/clipboard.dart';
 
 class FinishPage extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
+  final Duration elapsedTime;
+
+  FinishPage({required this.elapsedTime});
 
   void _shareScore(BuildContext context) {
     String playerName = _textController.text;
@@ -23,7 +27,8 @@ class FinishPage extends StatelessWidget {
       String message =
           "Salut ! Voici le nouveau score que je viens de faire sur Masyu :\n"
           "Difficulté : Moyen\n"
-          "Temps : 2min\n"
+          "Niveau : 1\n"
+          "Temps : ${elapsedTime.inMinutes.toString().padLeft(2, '0')}:${(elapsedTime.inSeconds % 60).toString().padLeft(2, '0')}\n"
           "Joueur : $playerName\n"
           "Essaye de me battre ! ;))";
       FlutterClipboard.copy(message).then((value) => Fluttertoast.showToast(
@@ -69,11 +74,14 @@ class FinishPage extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                         fontSize: 60)),
                 const SizedBox(height: 30),
-                const Text('00:00',
-                    style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 60)),
+                Text(
+                  "${elapsedTime.inMinutes.toString().padLeft(2, '0')}:${(elapsedTime.inSeconds % 60).toString().padLeft(2, '0')}",
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 60,
+                  ),
+                ),
                 const SizedBox(height: 75),
                 const Text('Nom du joueur :',
                     style: TextStyle(
@@ -110,7 +118,13 @@ class FinishPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 100),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LevelSelectionPage()),
+                    );
+                  },
                   child: const Text('VALIDER'),
                   style: SuccessButton,
                 ),
