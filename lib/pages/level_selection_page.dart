@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
+import 'package:masyu_game/pages/game_page.dart';
 import 'package:masyu_game/widgets/game.dart';
-=======
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
->>>>>>> a8202de71ef9e93690f90d69cbc9256e69503fa1
 
 class LevelSelectionPage extends StatelessWidget {
   @override
@@ -19,7 +17,12 @@ class LevelSelectionPage extends StatelessWidget {
                 children: [
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GamePage()),
+                      );
+                    },
                     child: Text('NIVEAU 1'),
                     style: PrimaryButton,
                   ),
