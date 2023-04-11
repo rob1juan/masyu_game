@@ -41,7 +41,7 @@ class DifficultySelectionPage extends StatelessWidget {
             child: Text('DIFFICILE'),
             style: DangerButton,
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 75),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
@@ -49,7 +49,7 @@ class DifficultySelectionPage extends StatelessWidget {
             child: Text('RETOUR'),
             style: SecondaryButton,
           ),
-          SizedBox(height: 100),
+          SizedBox(height: 75),
         ], false),
       ),
     );

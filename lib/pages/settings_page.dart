@@ -31,7 +31,7 @@ class SettingsPage extends StatelessWidget {
             child: Text('A PROPOS'),
             style: PrimaryButton,
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 75),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
@@ -39,7 +39,7 @@ class SettingsPage extends StatelessWidget {
             child: Text('RETOUR'),
             style: SecondaryButton,
           ),
-          SizedBox(height: 100),
+          SizedBox(height: 75),
         ], false),
       ),
     );
