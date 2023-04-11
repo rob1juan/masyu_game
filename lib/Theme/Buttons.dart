@@ -77,3 +77,14 @@ ButtonStyle DangerButton = ElevatedButton.styleFrom(
   elevation: 10.0,
   textStyle: TextStyle(fontWeight: FontWeight.w700),
 );
+
+ButtonStyle ShareButton = ElevatedButton.styleFrom(
+  backgroundColor: secondary,
+  minimumSize: Size(196, 48),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10),
+  ),
+  shadowColor: Colors.black,
+  elevation: 10.0,
+  textStyle: TextStyle(fontWeight: FontWeight.w700),
+);
