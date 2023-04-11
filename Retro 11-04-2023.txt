@@ -1,0 +1,25 @@
+Retro : permet de relater les bons et mauvais cotés du sprint en cours, et de trouver des méthodes pour résoudre les mauvais cotés.
+Réunion plutot accès sur l'organisation de l'équipe.
+
+Bon
+- Bonne cohésion d'équipe
+- Bonne organisation (trello, github, discord)
+- Pas vu trop large
+
+
+Pas bon
+- Se mettre au meme niveau
+->
+- Faire attention à update le trello
+-> Vérifier deux fois par séance le trello
+
+
+
+A commencer
+- rédiger des notes pour le compte rendu écrit
+
+
+A arreter
+-
+
+
