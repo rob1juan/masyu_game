@@ -54,8 +54,7 @@ class _GameBoardState extends State<GameBoard> {
         double gridSize = constraints.maxWidth / taille;
         return GestureDetector(
           onPanDown: (DragDownDetails details) {
-            RenderBox renderBox =
-                _centerKey.currentContext!.findRenderObject() as RenderBox;
+            RenderBox renderBox = context.findRenderObject() as RenderBox;
             double verticalPadding =
                 (constraints.maxHeight - constraints.maxWidth) / 2;
             final touchPosition =
@@ -104,7 +103,7 @@ class _GameBoardState extends State<GameBoard> {
             key: _centerKey,
             child: SizedBox(
               width: constraints.maxWidth,
-              height: constraints.maxWidth + 100,
+              height: constraints.maxWidth,
               child: Stack(
                 children: [
                   GridView.builder(
@@ -121,12 +120,6 @@ class _GameBoardState extends State<GameBoard> {
                           // Implémentez la logique pour gérer les actions de l'utilisateur ici
                         },
                         child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color.fromARGB(0, 0, 0, 0)),
-                            color: Color.fromARGB(0, 185, 78,
-                                228), // Changez la couleur d'arrière-plan ici
-                          ),
                           child: Stack(
                             children: [
                               Center(
@@ -170,7 +163,7 @@ class _GameBoardState extends State<GameBoard> {
                     },
                   ),
                   CustomPaint(
-                    size: Size(constraints.maxWidth, constraints.maxHeight),
+                    size: Size(constraints.maxWidth, constraints.maxWidth),
                     painter: LinePainter(lines: lines, gridSize: gridSize),
                   ),
                 ],
@@ -201,6 +194,7 @@ class LinePainter extends CustomPainter {
           lines[i].y * gridSize + gridSize / 4);
       final end = Offset(lines[i + 1].x * gridSize + gridSize / 2,
           lines[i + 1].y * gridSize + gridSize / 4);
+      print('Drawing line from $start to $end');
       canvas.drawLine(start, end, paint);
     }
   }

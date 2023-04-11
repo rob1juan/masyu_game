@@ -31,6 +31,8 @@ class GamePage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(20.0),
             child: Container(
+              height: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: Color.fromARGB(40, 255, 255, 255)),
