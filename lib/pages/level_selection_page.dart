@@ -32,31 +32,6 @@ class LevelSelectionPage extends StatelessWidget {
                       },
                       child: Text('Niveau 2'),
                     ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le classement du niveau 1
-                      },
-                      child: Text('Classement'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implémenter la navigation vers le classement du niveau 2
-                      },
-                      child: Text('Classement'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
                     ElevatedButton(
                       onPressed: () {
                         // TODO: Implémenter la navigation vers le niveau 3
@@ -73,6 +48,18 @@ class LevelSelectionPage extends StatelessWidget {
                 ),
                 Column(
                   children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // TODO: Implémenter la navigation vers le classement du niveau 1
+                      },
+                      child: Text('Classement'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // TODO: Implémenter la navigation vers le classement du niveau 2
+                      },
+                      child: Text('Classement'),
+                    ),
                     ElevatedButton(
                       onPressed: () {
                         // TODO: Implémenter la navigation vers le classement du niveau 3
