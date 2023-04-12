@@ -59,7 +59,7 @@ class _GamePageState extends State<GamePage> {
               height: MediaQuery.of(context).size.width,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(10),
                   color: Color.fromARGB(40, 255, 255, 255)),
               child: Padding(
                 padding: EdgeInsets.all(10.0),

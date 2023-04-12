@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/Theme/Color.dart';
 import 'package:masyu_game/models/plateau.dart';
 import 'package:masyu_game/models/case.dart';
 import 'package:masyu_game/models/line.dart';
@@ -30,7 +31,7 @@ class _GameBoardState extends State<GameBoard> {
     if (x < 0 || x >= taille || y < 0 || y >= taille) {
       return null;
     }
-    return vector.Vector2(x.toDouble(), y.toDouble() + 1);
+    return vector.Vector2(x.toDouble(), y.toDouble());
   }
 
   bool _isLineDiagonal(vector.Vector2 start, vector.Vector2 end) {
@@ -84,10 +85,16 @@ class _GameBoardState extends State<GameBoard> {
                 setState(() {
                   int lineIndex = _getLineIndex(_dragStart!, currentGridPos);
                   if (lineIndex != -1) {
-                    plateau.lines.removeAt(lineIndex);
+                    setState(() {
+                      plateau.lines.removeAt(lineIndex);
+                      plateau.CheckValidity();
+                    });
                   } else {
-                    plateau.lines
-                        .add(Line(start: _dragStart!, end: currentGridPos));
+                    setState(() {
+                      plateau.lines
+                          .add(Line(start: _dragStart!, end: currentGridPos));
+                      plateau.CheckValidity();
+                    });
                   }
                   _dragStart = currentGridPos;
                 });
@@ -120,6 +127,7 @@ class _GameBoardState extends State<GameBoard> {
                       int x = index % taille;
                       int y = index ~/ taille;
                       Case currentCase = plateau.grille[y][x];
+                      plateau.checkCaseValidity(currentCase);
                       return GestureDetector(
                         onTap: () {
                           // Implémentez la logique pour gérer les actions de l'utilisateur ici
@@ -140,8 +148,9 @@ class _GameBoardState extends State<GameBoard> {
                             Center(
                               child: currentCase.type == CaseType.Filled
                                   ? CircleAvatar(
-                                      backgroundColor: const Color.fromARGB(
-                                          255, 255, 255, 255))
+                                      backgroundColor: currentCase.isValide
+                                          ? Colors.white
+                                          : danger)
                                   : currentCase.type == CaseType.Circle
                                       ? Container(
                                           width:
@@ -153,8 +162,9 @@ class _GameBoardState extends State<GameBoard> {
                                             color: Color.fromARGB(
                                                 255, 186 - y * 2, 79, 226),
                                             border: Border.all(
-                                                color: const Color.fromARGB(
-                                                    255, 255, 255, 255),
+                                                color: currentCase.isValide
+                                                    ? Colors.white
+                                                    : danger,
                                                 width: 3),
                                           ),
                                         )
@@ -185,14 +195,14 @@ class LinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
       ..color = Color.fromARGB(255, 255, 255, 255)
-      ..strokeWidth = 4
+      ..strokeWidth = 6
       ..strokeCap = StrokeCap.round;
 
     for (int i = 0; i < lines.length; i++) {
       final start = Offset(lines[i].start.x * gridSize + gridSize / 2,
-          lines[i].start.y * gridSize - gridSize / 2);
+          lines[i].start.y * gridSize + gridSize / 2);
       final end = Offset(lines[i].end.x * gridSize + gridSize / 2,
-          lines[i].end.y * gridSize - gridSize / 2);
+          lines[i].end.y * gridSize + gridSize / 2);
       canvas.drawLine(start, end, paint);
     }
   }
