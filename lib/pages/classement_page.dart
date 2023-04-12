@@ -45,7 +45,8 @@ class classement_page extends StatelessWidget {
           ),
           const Text(
             "CLASSEMENT",
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            style: TextStyle(
+                fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600),
           ),
           SizedBox(
             height: 20,
@@ -54,49 +55,59 @@ class classement_page extends StatelessWidget {
             // height: 200,
             height: MediaQuery.of(context).size.height - 420,
             width: MediaQuery.of(context).size.width * 0.8,
-            child: ListView.builder(
-                itemCount: players.length, // nombre d'éléments dans la liste
-                itemBuilder: (context, index) => Stack(children: [
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: ListTile(
-                            title: Row(children: [
-                          Expanded(
-                              flex: 2,
-                              child: Text(
-                                players[index],
-                                style: const TextStyle(
-                                    fontSize: 20.0, color: Colors.white),
-                                textAlign: TextAlign.center,
-                              )),
-                          Expanded(
-                              flex: 5,
-                              child: Text(
-                                "Mathéo",
-                                style: const TextStyle(
-                                    fontSize: 20.0, color: Colors.white),
-                                textAlign: TextAlign.center,
-                              )),
-                          Expanded(
-                              flex: 3,
-                              child: Text(
-                                "59:30",
-                                style: const TextStyle(
-                                    fontSize: 20.0, color: Colors.white),
-                                textAlign: TextAlign.center,
-                              )),
-                        ])),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                    ])),
+            child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: ListView.builder(
+                    itemCount:
+                        players.length, // nombre d'éléments dans la liste
+                    itemBuilder: (context, index) => Stack(children: [
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                                title: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                  Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        players[index],
+                                        style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  Expanded(
+                                      flex: 5,
+                                      child: Text(
+                                        "Mathéo",
+                                        style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "59:30",
+                                        style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                ])),
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                        ]))),
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.8,
@@ -131,10 +142,10 @@ class classement_page extends StatelessWidget {
           color: Colors.white,
         ),
         Container(
-          height: 50,
+          height: 30,
           decoration: BoxDecoration(
             color: Color.fromARGB(255, 200, 9, 222).withOpacity(0.4),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Row(children: [
             SizedBox(
@@ -144,21 +155,21 @@ class classement_page extends StatelessWidget {
                 flex: 2,
                 child: Text(
                   "id.",
-                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  style: const TextStyle(fontSize: 14.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
             Expanded(
                 flex: 5,
                 child: Text(
                   "Mathéo",
-                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  style: const TextStyle(fontSize: 14.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
             Expanded(
                 flex: 3,
                 child: Text(
                   "59:30",
-                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  style: const TextStyle(fontSize: 14.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
             SizedBox(
