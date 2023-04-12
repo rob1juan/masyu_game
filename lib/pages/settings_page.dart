@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:masyu_game/pages/difficulty_selection_page.dart';
-import 'package:masyu_game/pages/settings_page.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 
-class MenuPage extends StatelessWidget {
+class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Récupérer la taille de l'écran
@@ -18,31 +16,41 @@ class MenuPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
-          //Ajoute un sizedbox de la taille d'un bouton
-          SizedBox(height: topSpacing * 4),
+          SizedBox(height: topSpacing * 2),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DifficultySelectionPage()),
-              );
+              Navigator.pop(context);
             },
-            child: Text('JOUER'),
+            child: Text('MUSIQUE'),
             style: YellowButton(context),
           ),
           SizedBox(height: verticalSpacing * 1.5),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsPage()),
-              );
+              Navigator.pop(context);
             },
-            child: Text('OPTIONS'),
+            child: Text('REGLES'),
             style: WarningButton(context),
           ),
-        ], true),
+          SizedBox(height: verticalSpacing * 1.5),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('A PROPOS'),
+            style: PrimaryButton(context),
+          ),
+          SizedBox(height: verticalSpacing * 1.5),
+          Spacer(),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('RETOUR'),
+            style: SecondaryButton(context),
+          ),
+          SizedBox(height: verticalSpacing * 1.5),
+        ], false),
       ),
     );
   }

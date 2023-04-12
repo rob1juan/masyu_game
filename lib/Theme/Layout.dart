@@ -18,6 +18,8 @@ List<Widget> BuildBasicLayout(List<Widget> children, bool showCredit) {
       ),
       SizedBox(height: 20),
     ]);
+  } else {
+    children.add(Spacer());
   }
 
   return [
@@ -26,11 +28,26 @@ List<Widget> BuildBasicLayout(List<Widget> children, bool showCredit) {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+            SizedBox(height: 50),
             Image.asset(
               'assets/logo.png',
               fit: BoxFit.contain,
-              height: 300,
+              height: 175,
             ),
+          ] +
+          children,
+    ))
+  ];
+}
+
+List<Widget> BuildFinishLayout(List<Widget> children) {
+  return [
+    BackgroundGradient,
+    Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+            SizedBox(height: 50),
           ] +
           children,
     ))
