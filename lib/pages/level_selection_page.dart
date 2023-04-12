@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
+import 'package:masyu_game/pages/classement_page.dart';
+
 
 class LevelSelectionPage extends StatelessWidget {
   @override
@@ -70,10 +72,17 @@ class LevelSelectionPage extends StatelessWidget {
                       minimumSize: MaterialStateProperty.all<Size>(
                           Size(buttonWidth, buttonHeight)),
                     ),
+
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => classement_page(1, id: 3)),
+                        );
+                    },
                     child: Image.asset(
                       'assets/poduim.png',
                       width: imageWidth,
