@@ -106,13 +106,13 @@ class FinishPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () => _shareScore(context),
                   child: const Text('PARTAGER'),
-                  style: ShareButton,
+                  style: ShareButton(context),
                 ),
                 const SizedBox(height: 100),
                 ElevatedButton(
                   onPressed: () {},
                   child: const Text('VALIDER'),
-                  style: SuccessButton,
+                  style: SuccessButton(context),
                 ),
                 const SizedBox(height: 70),
               ]),

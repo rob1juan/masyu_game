@@ -18,6 +18,8 @@ List<Widget> BuildBasicLayout(List<Widget> children, bool showCredit) {
       ),
       SizedBox(height: 20),
     ]);
+  } else {
+    children.add(Spacer());
   }
 
   return [
@@ -26,7 +28,7 @@ List<Widget> BuildBasicLayout(List<Widget> children, bool showCredit) {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-            SizedBox(height: 50),
+            SizedBox(height: 20),
             Image.asset(
               'assets/logo.png',
               fit: BoxFit.contain,
