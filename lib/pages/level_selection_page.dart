@@ -42,7 +42,7 @@ class LevelSelectionPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => classement_page()),
+                              builder: (context) => classement_page(1, id: 3)),
                         );
                       },
                       child: Text('Classement'),
