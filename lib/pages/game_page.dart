@@ -80,7 +80,7 @@ class _GamePageState extends State<GamePage> {
               );
             },
             child: Text("Valider"),
-            style: SuccessButton,
+            style: SuccessButton(context),
           ),
           SizedBox(height: 10),
           ElevatedButton(
@@ -91,7 +91,7 @@ class _GamePageState extends State<GamePage> {
               );
             },
             child: Text("Recommencer"),
-            style: DangerButton,
+            style: DangerButton(context),
           ),
           SizedBox(height: 20),
         ],
