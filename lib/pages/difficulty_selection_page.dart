@@ -7,10 +7,18 @@ import 'package:masyu_game/pages/menu_page.dart';
 class DifficultySelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Récupérer la taille de l'écran
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    // Définir des tailles responsives pour les espacements
+    double verticalSpacing = screenHeight * 0.025;
+    double topSpacing = screenHeight * 0.05;
+
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
-          SizedBox(height: 100),
+          SizedBox(height: topSpacing * 2),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -19,9 +27,9 @@ class DifficultySelectionPage extends StatelessWidget {
               );
             },
             child: Text('FACILE'),
-            style: SuccessButton,
+            style: SuccessButton(context),
           ),
-          SizedBox(height: 50),
+          SizedBox(height: verticalSpacing * 1.5),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -30,9 +38,9 @@ class DifficultySelectionPage extends StatelessWidget {
               );
             },
             child: Text('MOYEN'),
-            style: WarningButton,
+            style: WarningButton(context),
           ),
-          SizedBox(height: 50),
+          SizedBox(height: verticalSpacing * 1.5),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -41,9 +49,10 @@ class DifficultySelectionPage extends StatelessWidget {
               );
             },
             child: Text('DIFFICILE'),
-            style: DangerButton,
+            style: DangerButton(context),
           ),
-          SizedBox(height: 75),
+          SizedBox(height: verticalSpacing * 1.5),
+          Spacer(),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -52,9 +61,9 @@ class DifficultySelectionPage extends StatelessWidget {
               );
             },
             child: Text('RETOUR'),
-            style: SecondaryButton,
+            style: SecondaryButton(context),
           ),
-          SizedBox(height: 75),
+          SizedBox(height: verticalSpacing * 1.5),
         ], false),
       ),
     );

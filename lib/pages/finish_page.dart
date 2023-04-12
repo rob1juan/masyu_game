@@ -44,6 +44,13 @@ class FinishPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Récupérer la taille de l'écran
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    // Définir des tailles responsives pour les espacements
+    double verticalSpacing = screenHeight * 0.025;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -67,7 +74,7 @@ class FinishPage extends StatelessWidget {
                         color: Color.fromRGBO(255, 255, 255, 1),
                         fontWeight: FontWeight.w700,
                         fontSize: 25)),
-                const SizedBox(height: 70),
+                SizedBox(height: screenHeight * 0.1),
                 const Text('Temps',
                     style: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -82,7 +89,7 @@ class FinishPage extends StatelessWidget {
                     fontSize: 60,
                   ),
                 ),
-                const SizedBox(height: 75),
+                SizedBox(height: screenHeight * 0.1),
                 const Text('Nom du joueur :',
                     style: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -90,7 +97,7 @@ class FinishPage extends StatelessWidget {
                         fontSize: 20)),
                 const SizedBox(height: 10),
                 Container(
-                  width: 250,
+                  width: screenWidth * 0.8,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                     color: Color.fromRGBO(255, 255, 255, 0.137),
@@ -110,13 +117,13 @@ class FinishPage extends StatelessWidget {
                     autofocus: false,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.025),
                 ElevatedButton(
                   onPressed: () => _shareScore(context),
                   child: const Text('PARTAGER'),
-                  style: ShareButton,
+                  style: ShareButton(context),
                 ),
-                const SizedBox(height: 100),
+                SizedBox(height: screenHeight * 0.1),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -126,9 +133,9 @@ class FinishPage extends StatelessWidget {
                     );
                   },
                   child: const Text('VALIDER'),
-                  style: SuccessButton,
+                  style: SuccessButton(context),
                 ),
-                const SizedBox(height: 70),
+                SizedBox(height: screenHeight * 0.1),
               ]),
             ),
           ),
