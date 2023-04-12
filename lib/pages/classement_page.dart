@@ -40,15 +40,19 @@ class classement_page extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
+          SizedBox(
+            height: 15,
+          ),
           const Text(
             "CLASSEMENT",
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
           SizedBox(
-            height: 15,
+            height: 20,
           ),
           Container(
-            height: 200,
+            // height: 200,
+            height: MediaQuery.of(context).size.height - 420,
             width: MediaQuery.of(context).size.width * 0.8,
             child: ListView.builder(
                 itemCount: players.length, // nombre d'éléments dans la liste
@@ -67,7 +71,9 @@ class classement_page extends StatelessWidget {
                               flex: 2,
                               child: Text(
                                 players[index],
-                                style: const TextStyle(fontSize: 20.0),
+                                style: const TextStyle(
+                                    fontSize: 20.0, color: Colors.white),
+                                textAlign: TextAlign.center,
                               )),
                           Expanded(
                               flex: 5,
@@ -75,12 +81,15 @@ class classement_page extends StatelessWidget {
                                 "Mathéo",
                                 style: const TextStyle(
                                     fontSize: 20.0, color: Colors.white),
+                                textAlign: TextAlign.center,
                               )),
                           Expanded(
                               flex: 3,
                               child: Text(
                                 "59:30",
-                                style: const TextStyle(fontSize: 20.0),
+                                style: const TextStyle(
+                                    fontSize: 20.0, color: Colors.white),
+                                textAlign: TextAlign.center,
                               )),
                         ])),
                       ),
@@ -90,7 +99,6 @@ class classement_page extends StatelessWidget {
                     ])),
           ),
           Container(
-            height: 150,
             width: MediaQuery.of(context).size.width * 0.8,
             child: footer(context),
           )
@@ -112,7 +120,7 @@ class classement_page extends StatelessWidget {
               );
             },
             child: const Text('RETOUR'),
-            style: SecondaryButton,
+            style: SecondaryButton(context),
           ),
         ],
       );
@@ -129,24 +137,33 @@ class classement_page extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: Row(children: [
+            SizedBox(
+              width: 16,
+            ),
             Expanded(
                 flex: 2,
                 child: Text(
                   "id.",
-                  style: const TextStyle(fontSize: 20.0),
+                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  textAlign: TextAlign.center,
                 )),
             Expanded(
                 flex: 5,
                 child: Text(
                   "Mathéo",
                   style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  textAlign: TextAlign.center,
                 )),
             Expanded(
                 flex: 3,
                 child: Text(
                   "59:30",
-                  style: const TextStyle(fontSize: 20.0),
+                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  textAlign: TextAlign.center,
                 )),
+            SizedBox(
+              width: 16,
+            ),
           ]),
         ),
         SizedBox(
@@ -157,7 +174,7 @@ class classement_page extends StatelessWidget {
             Navigator.pop(context);
           },
           child: const Text('RETOUR'),
-          style: SecondaryButton,
+          style: SecondaryButton(context),
         ),
       ],
     );
