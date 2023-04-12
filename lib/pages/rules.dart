@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/pages/settings_page.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class RulesPage extends StatelessWidget {
   @override
@@ -10,8 +11,140 @@ class RulesPage extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    // Définir des tailles responsives pour les espacements
-    double verticalSpacing = screenHeight * 0.025;
+    // Créer le carrousel slider
+    final carouselSlider = CarouselSlider(
+      options: CarouselOptions(height: screenHeight * 0.7, autoPlay: false),
+      items: [
+        // Première slide
+        Container(
+          width: screenWidth * 0.7,
+          child: Column(
+            children: [
+              SizedBox(height: screenHeight * 0.1),
+              Text(
+                "Le Masyu est un jeu de logique japonais qui se joue sur une grille. \n\nLe but du jeu est de tracer un chemin continu à travers les cercles blancs et noirs présents sur la grille, en respectant certaines règles. \n\nVoici les règles de base pour résoudre une grille de Masyu...",
+                style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
+        ),
+        // Deuxième slide
+        Container(
+          width: screenWidth * 0.7,
+          child: Column(
+            children: [
+              Text(
+                "Le chemin doit passer par tous les cercles, blancs et noirs, sans exception.",
+                style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                textAlign: TextAlign.justify,
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              Image.asset(
+                'assets/puzzle-masyu.png',
+                fit: BoxFit.contain,
+                height: 250,
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              Text(
+                "Le chemin ne doit jamais se croiser ni se superposer.",
+                style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
+        ),
+        // Troisième slide
+        Container(
+          width: screenWidth * 0.7,
+          child: Column(
+            children: [
+              Text(
+                "Lorsque le chemin passe par un cercle blanc :\na. Il doit continuer tout droit et ne pas tourner à angle droit.\nb. Il doit tourner à angle droit au moins une fois soit avant, soit après le cercle blanc, ou les deux.",
+                style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                textAlign: TextAlign.justify,
+              ),
+              // Image
+              Image.asset(
+                'assets/regle-b-vrai.png',
+                fit: BoxFit.contain,
+                height: 150,
+              ),
+              Image.asset(
+                'assets/regle-b-faux.png',
+                fit: BoxFit.contain,
+                height: 150,
+              ),
+            ],
+          ),
+        ),
+        // Quatrième slide
+        Container(
+          width: screenWidth * 0.7,
+          child: Column(
+            children: [
+              Text(
+                "Lorsque le chemin passe par un cercle noir :\na. Il doit obligatoirement tourner à angle droit.\nb. Il doit continuer tout droit sur au moins une case de chaque côté du cercle noir.",
+                style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                textAlign: TextAlign.justify,
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              // Image
+              Image.asset(
+                'assets/regle-n-vrai.png',
+                fit: BoxFit.contain,
+                height: 170,
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              Image.asset(
+                'assets/regle-n-faux.png',
+                fit: BoxFit.contain,
+                height: 170,
+              ),
+            ],
+          ),
+        ),
+        // Cinquième slide
+        Container(
+          width: screenWidth * 0.7,
+          child: Column(
+            children: [
+              SizedBox(height: screenHeight * 0.1),
+              Text(
+                "ENJOY !",
+                style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 30),
+                textAlign: TextAlign.justify,
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              // Insère un gif
+              Image.asset(
+                'assets/Cat2.gif',
+                fit: BoxFit.contain,
+                height: 125,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
 
     return Scaffold(
       body: Stack(
@@ -38,23 +171,8 @@ class RulesPage extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                         fontSize: 25)),
                 SizedBox(height: screenHeight * 0.1),
-                Container(
-                  width: screenWidth * 0.7,
-                  child: const Text(
-                      'Il faut dessiner des lignes entre les points pour former une boucle unique sans croisement.\n\n\nLa boucle doit passer à travers tous les cercles blancs et noirs de la façon suivante :\n\n- On doit passer à travers les cercles blancs en ligne droite, mais la boucle doit tourner dans la cellule précédente et/ou suivante.\n\n- La boucle doit tourner sur les cercles noirs et aller tout droit dans la cellule précédente et la cellule suivante.\n\n\nGlisser votre doigt entre les points pour les relier, et repasser dessus pour les supprimer.',
-                      style: TextStyle(
-                          color: Color.fromRGBO(255, 255, 255, 1),
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16),
-                      textAlign: TextAlign.justify),
-                ),
+                carouselSlider, // Ajouter le carrousel slider
                 SizedBox(height: screenHeight * 0.05),
-                // Insère un gif
-                Image.asset(
-                  'assets/Cat2.gif',
-                  fit: BoxFit.contain,
-                  height: 125,
-                ),
               ]),
             ),
           ),
