@@ -71,6 +71,8 @@ flutter:
   assets:
     - assets/logo.png
     - assets/poduim.png
+    - assets/Cat.gif
+    - assets/Cat2.gif
     - assets/music/menu.mp3
     - assets/music/game.mp3
     - assets/music/finish.mp3

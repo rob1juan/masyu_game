@@ -74,13 +74,7 @@ class LevelSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => classement_page(1, id: 3)),
-                      );
-                    },
+                    onPressed: () {},
                     child: Image.asset(
                       'assets/poduim.png',
                       width: imageWidth,
