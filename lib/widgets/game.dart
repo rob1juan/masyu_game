@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masyu_game/models/plateau.dart';
 import 'package:masyu_game/models/case.dart';
+import 'package:masyu_game/models/line.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class GameBoard extends StatefulWidget {
@@ -15,7 +16,6 @@ class _GameBoardState extends State<GameBoard> {
 
   bool _isDragging = false;
   vector.Vector2? _dragStart;
-  List<vector.Vector2> lines = [];
 
   @override
   void initState() {
@@ -38,9 +38,9 @@ class _GameBoardState extends State<GameBoard> {
   }
 
   int _getLineIndex(vector.Vector2 start, vector.Vector2 end) {
-    for (int i = 0; i < lines.length - 1; i += 2) {
-      if ((lines[i] == start && lines[i + 1] == end) ||
-          (lines[i] == end && lines[i + 1] == start)) {
+    for (int i = 0; i < plateau.lines.length; i++) {
+      if ((plateau.lines[i].start == start && plateau.lines[i].end == end) ||
+          (plateau.lines[i].start == end && plateau.lines[i].end == start)) {
         return i;
       }
     }
@@ -84,10 +84,10 @@ class _GameBoardState extends State<GameBoard> {
                 setState(() {
                   int lineIndex = _getLineIndex(_dragStart!, currentGridPos);
                   if (lineIndex != -1) {
-                    lines.removeRange(lineIndex, lineIndex + 1);
+                    plateau.lines.removeAt(lineIndex);
                   } else {
-                    lines.add(_dragStart!);
-                    lines.add(currentGridPos);
+                    plateau.lines
+                        .add(Line(start: _dragStart!, end: currentGridPos));
                   }
                   _dragStart = currentGridPos;
                 });
@@ -107,7 +107,8 @@ class _GameBoardState extends State<GameBoard> {
                 children: [
                   CustomPaint(
                     size: Size(constraints.maxWidth, constraints.maxWidth),
-                    painter: LinePainter(lines: lines, gridSize: gridSize),
+                    painter:
+                        LinePainter(lines: plateau.lines, gridSize: gridSize),
                   ),
                   GridView.builder(
                     padding: EdgeInsets.zero,
@@ -175,7 +176,7 @@ class _GameBoardState extends State<GameBoard> {
 }
 
 class LinePainter extends CustomPainter {
-  final List<vector.Vector2> lines;
+  final List<Line> lines;
   final double gridSize;
 
   LinePainter({required this.lines, required this.gridSize});
@@ -187,11 +188,11 @@ class LinePainter extends CustomPainter {
       ..strokeWidth = 4
       ..strokeCap = StrokeCap.round;
 
-    for (int i = 0; i < lines.length - 1; i += 2) {
-      final start = Offset(lines[i].x * gridSize + gridSize / 2,
-          lines[i].y * gridSize - gridSize / 2);
-      final end = Offset(lines[i + 1].x * gridSize + gridSize / 2,
-          lines[i + 1].y * gridSize - gridSize / 2);
+    for (int i = 0; i < lines.length; i++) {
+      final start = Offset(lines[i].start.x * gridSize + gridSize / 2,
+          lines[i].start.y * gridSize - gridSize / 2);
+      final end = Offset(lines[i].end.x * gridSize + gridSize / 2,
+          lines[i].end.y * gridSize - gridSize / 2);
       canvas.drawLine(start, end, paint);
     }
   }

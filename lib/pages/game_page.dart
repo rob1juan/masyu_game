@@ -3,10 +3,8 @@ import 'package:masyu_game/widgets/game.dart';
 import 'package:masyu_game/pages/finish_page.dart';
 import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
-import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/Theme/Color.dart';
 import 'package:masyu_game/widgets/stopwatch_text.dart';
-import 'dart:async';
 
 class GamePage extends StatefulWidget {
   @override
@@ -38,6 +36,7 @@ class _GamePageState extends State<GamePage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 20),
           Text(
             "Niveau ...",
             style: TextStyle(color: Colors.white, fontSize: 24),
@@ -68,6 +67,7 @@ class _GamePageState extends State<GamePage> {
               ),
             ),
           ),
+          Spacer(),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -93,6 +93,7 @@ class _GamePageState extends State<GamePage> {
             child: Text("Recommencer"),
             style: DangerButton,
           ),
+          SizedBox(height: 20),
         ],
       ))
     ]));
