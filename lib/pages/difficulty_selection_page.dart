@@ -51,6 +51,7 @@ class DifficultySelectionPage extends StatelessWidget {
             style: DangerButton(context),
           ),
           SizedBox(height: verticalSpacing * 1.5),
+          Spacer(),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);

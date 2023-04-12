@@ -30,7 +30,7 @@ ButtonStyle PrimaryButton(BuildContext context) =>
 ButtonStyle SecondaryButton(BuildContext context) =>
     responsiveButtonStyle(context, secondary);
 ButtonStyle ClassementButton(BuildContext context) =>
-    buttonStyleWithSize(secondary, 65, 65);
+    responsiveButtonStyle(context, secondary);
 ButtonStyle YellowButton(BuildContext context) =>
     responsiveButtonStyle(context, yellow);
 ButtonStyle SuccessButton(BuildContext context) =>

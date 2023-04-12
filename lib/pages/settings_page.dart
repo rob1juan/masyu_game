@@ -41,6 +41,7 @@ class SettingsPage extends StatelessWidget {
             style: PrimaryButton(context),
           ),
           SizedBox(height: verticalSpacing * 1.5),
+          Spacer(),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);

@@ -19,7 +19,7 @@ class MenuPage extends StatelessWidget {
       body: Stack(
         children: BuildBasicLayout([
           //Ajoute un sizedbox de la taille d'un bouton
-          SizedBox(height: topSpacing * 2),
+          SizedBox(height: topSpacing * 4),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
