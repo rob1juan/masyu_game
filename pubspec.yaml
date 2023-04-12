@@ -43,6 +43,7 @@ dependencies:
 
   fluttertoast: ^8.0.7
   clipboard: ^0.1.2+1
+  audioplayers: ^0.20.1
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,9 @@ flutter:
   assets:
     - assets/logo.png
     - assets/poduim.png
+    - assets/music/menu.mp3
+    - assets/music/game.mp3
+    - assets/music/finish.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
