@@ -1,12 +1,11 @@
 class Case {
-  bool cerclePlein;
-  bool cercleVide;
-  String actionUtilisateur;
-  bool estCorrect;
+  CaseType type;
+  bool isValide;
 
-  Case(
-      {this.cerclePlein = false,
-      this.cercleVide = false,
-      this.actionUtilisateur = "",
-      this.estCorrect = false});
+  Case({
+    this.type = CaseType.None,
+    this.isValide = false,
+  });
 }
+
+enum CaseType { None, Filled, Circle }

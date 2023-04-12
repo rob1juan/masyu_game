@@ -84,7 +84,7 @@ class _GameBoardState extends State<GameBoard> {
                 setState(() {
                   int lineIndex = _getLineIndex(_dragStart!, currentGridPos);
                   if (lineIndex != -1) {
-                    lines.removeRange(lineIndex, lineIndex + 2);
+                    lines.removeRange(lineIndex, lineIndex + 1);
                   } else {
                     lines.add(_dragStart!);
                     lines.add(currentGridPos);
@@ -137,11 +137,11 @@ class _GameBoardState extends State<GameBoard> {
                               ),
                             ),
                             Center(
-                              child: currentCase.cerclePlein
+                              child: currentCase.type == CaseType.Filled
                                   ? CircleAvatar(
                                       backgroundColor: const Color.fromARGB(
                                           255, 255, 255, 255))
-                                  : currentCase.cercleVide
+                                  : currentCase.type == CaseType.Circle
                                       ? Container(
                                           width:
                                               40, // ajustez la taille du cercle ici
@@ -192,7 +192,6 @@ class LinePainter extends CustomPainter {
           lines[i].y * gridSize - gridSize / 2);
       final end = Offset(lines[i + 1].x * gridSize + gridSize / 2,
           lines[i + 1].y * gridSize - gridSize / 2);
-      print('Drawing line from $start to $end');
       canvas.drawLine(start, end, paint);
     }
   }

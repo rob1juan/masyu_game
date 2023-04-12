@@ -1,13 +1,16 @@
+import 'package:masyu_game/models/line.dart';
+
 import 'case.dart';
 import 'dart:math';
 
 class Plateau {
   int taille;
-  List<List<Case>> grille;
+  late List<List<Case>> grille;
+  late List<Line> lines;
 
-  Plateau({required this.taille})
-      : grille =
-            List.generate(taille, (_) => List.generate(taille, (_) => Case())) {
+  Plateau({required this.taille}) {
+    grille = List.generate(taille, (_) => List.generate(taille, (_) => Case()));
+    lines = List.empty(growable: true);
     initializeCercles();
   }
 
@@ -20,8 +23,7 @@ class Plateau {
       int x = random.nextInt(taille);
       int y = random.nextInt(taille);
       bool cerclePlein = random.nextBool();
-      grille[y][x].cerclePlein = cerclePlein;
-      grille[y][x].cercleVide = !cerclePlein;
+      grille[y][x].type = cerclePlein ? CaseType.Filled : CaseType.Circle;
     }
   }
 }
