@@ -112,7 +112,7 @@ class classement_page extends StatelessWidget {
               );
             },
             child: const Text('RETOUR'),
-            style: SecondaryButton,
+            style: SecondaryButton(context),
           ),
         ],
       );
@@ -157,7 +157,7 @@ class classement_page extends StatelessWidget {
             Navigator.pop(context);
           },
           child: const Text('RETOUR'),
-          style: SecondaryButton,
+          style: SecondaryButton(context),
         ),
       ],
     );

@@ -45,6 +45,8 @@ dependencies:
   clipboard: ^0.1.2+1
   audioplayers: ^0.20.1
 
+  carousel_slider: ^4.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -71,6 +73,13 @@ flutter:
   assets:
     - assets/logo.png
     - assets/poduim.png
+    - assets/puzzle-masyu.png
+    - assets/regle-b-vrai.png
+    - assets/regle-b-faux.png
+    - assets/regle-n-vrai.png
+    - assets/regle-n-faux.png
+    - assets/Cat.gif
+    - assets/Cat2.gif
     - assets/music/menu.mp3
     - assets/music/game.mp3
     - assets/music/finish.mp3

@@ -24,12 +24,21 @@ class LevelSelectionPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
+          SizedBox(height: topSpacing * 1.5),
+          Text(
+            'CHOIX DU NIVEAU',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
                 children: [
-                  SizedBox(height: topSpacing * 2),
+                  SizedBox(height: topSpacing),
                   ElevatedButton(
                     onPressed: () {},
                     child: Text('NIVEAU 1'),
@@ -58,7 +67,7 @@ class LevelSelectionPage extends StatelessWidget {
               SizedBox(width: horizontalSpacing),
               Column(
                 children: [
-                  SizedBox(height: topSpacing * 2),
+                  SizedBox(height: topSpacing),
                   ElevatedButton(
                     onPressed: () {},
                     child: Image.asset(
@@ -74,13 +83,7 @@ class LevelSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => classement_page(1, id: 3)),
-                      );
-                    },
+                    onPressed: () {},
                     child: Image.asset(
                       'assets/poduim.png',
                       width: imageWidth,
