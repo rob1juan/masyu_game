@@ -8,7 +8,33 @@ class FinishPage extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
 
   void _shareScore(BuildContext context) {
-    // ...
+    String playerName = _textController.text;
+
+    if (playerName.isEmpty) {
+      Fluttertoast.showToast(
+          msg: "Vous ne pouvez pas partager le score sans nom de joueur.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      String message =
+          "Salut ! Voici le nouveau score que je viens de faire sur Masyu :\n"
+          "Difficulté : Moyen\n"
+          "Temps : 2min\n"
+          "Joueur : $playerName\n"
+          "Essaye de me battre ! ;))";
+      FlutterClipboard.copy(message).then((value) => Fluttertoast.showToast(
+          msg: "Message copié dans le presse-papier avec succès!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0));
+    }
   }
 
   @override
