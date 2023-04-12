@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/pages/classement_page.dart';
 
 class LevelSelectionPage extends StatelessWidget {
   @override
@@ -38,7 +39,11 @@ class LevelSelectionPage extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // TODO: Implémenter la navigation vers le classement du niveau 1
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => classement_page()),
+                        );
                       },
                       child: Text('Classement'),
                     ),
