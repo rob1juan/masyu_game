@@ -82,7 +82,7 @@ class _GamePageState extends State<GamePage> {
             child: Text("Valider"),
             style: SuccessButton,
           ),
-          SizedBox(height: 25),
+          SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -91,7 +91,7 @@ class _GamePageState extends State<GamePage> {
               );
             },
             child: Text("Recommencer"),
-            style: SecondaryButton,
+            style: DangerButton,
           ),
         ],
       ))

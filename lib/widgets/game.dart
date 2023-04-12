@@ -102,11 +102,15 @@ class _GameBoardState extends State<GameBoard> {
           child: Center(
             key: _centerKey,
             child: SizedBox(
-              width: constraints.maxWidth,
-              height: constraints.maxWidth,
+              height: gridSize * taille,
               child: Stack(
                 children: [
+                  CustomPaint(
+                    size: Size(constraints.maxWidth, constraints.maxWidth),
+                    painter: LinePainter(lines: lines, gridSize: gridSize),
+                  ),
                   GridView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: taille * taille,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: taille,
@@ -119,52 +123,46 @@ class _GameBoardState extends State<GameBoard> {
                         onTap: () {
                           // Implémentez la logique pour gérer les actions de l'utilisateur ici
                         },
-                        child: Container(
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: currentCase.cerclePlein
-                                    ? CircleAvatar(
-                                        backgroundColor: const Color.fromARGB(
-                                            255, 255, 255, 255))
-                                    : currentCase.cercleVide
-                                        ? Container(
-                                            width:
-                                                40, // ajustez la taille du cercle ici
-                                            height:
-                                                40, // ajustez la taille du cercle ici
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: const Color.fromARGB(
-                                                  0, 255, 255, 255),
-                                              border: Border.all(
-                                                  color: const Color.fromARGB(
-                                                      255, 255, 255, 255),
-                                                  width: 3),
-                                            ),
-                                          )
-                                        : null,
-                              ),
-                              Center(
-                                child: Container(
-                                  width: 8, // ajustez la taille du point ici
-                                  height: 8, // ajustez la taille du point ici
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white.withOpacity(
-                                        0.2), // réglez l'opacité ici
-                                  ),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Container(
+                                width: 8, // ajustez la taille du point ici
+                                height: 8, // ajustez la taille du point ici
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white
+                                      .withOpacity(0.2), // réglez l'opacité ici
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Center(
+                              child: currentCase.cerclePlein
+                                  ? CircleAvatar(
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 255, 255, 255))
+                                  : currentCase.cercleVide
+                                      ? Container(
+                                          width:
+                                              40, // ajustez la taille du cercle ici
+                                          height:
+                                              40, // ajustez la taille du cercle ici
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color.fromARGB(
+                                                255, 186 - y * 2, 79, 226),
+                                            border: Border.all(
+                                                color: const Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                                width: 3),
+                                          ),
+                                        )
+                                      : null,
+                            ),
+                          ],
                         ),
                       );
                     },
-                  ),
-                  CustomPaint(
-                    size: Size(constraints.maxWidth, constraints.maxWidth),
-                    painter: LinePainter(lines: lines, gridSize: gridSize),
                   ),
                 ],
               ),
