@@ -49,6 +49,14 @@ class _FinishPageState extends State<FinishPage> {
 
   Future<void> finishBackgroundMusic() async {
     await finishPlayer.setAsset('assets/music/finish.mp3');
+    double musicValue = await MusicPreferences.getMusicValue();
+    bool musicIsActivated = await MusicPreferences.getMusicIsActivated();
+
+    if (musicIsActivated) {
+      finishPlayer.setVolume(musicValue / 100);
+    } else {
+      finishPlayer.setVolume(0);
+    }
     await finishPlayer.play();
     final player = BackgroundAudio.of(context).backgroundPlayer;
     final isPlaying = BackgroundAudio.of(context).isPlaying;
