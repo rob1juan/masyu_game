@@ -43,7 +43,6 @@ dependencies:
 
   fluttertoast: ^8.0.7
   clipboard: ^0.1.2+1
-  audioplayers: ^0.20.1
 
   carousel_slider: ^4.0.0
 
