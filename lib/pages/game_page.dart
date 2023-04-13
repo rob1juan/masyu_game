@@ -6,13 +6,58 @@ import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Color.dart';
 import 'package:masyu_game/widgets/stopwatch_text.dart';
 
+import 'package:just_audio/just_audio.dart';
+import 'package:masyu_game/widgets/background_audio.dart';
+
 class GamePage extends StatefulWidget {
+  final ValueNotifier<bool> isPlaying;
+
+  GamePage({required this.isPlaying});
   @override
   _GamePageState createState() => _GamePageState();
 }
 
 class _GamePageState extends State<GamePage> {
   Duration _elapsedTime = Duration.zero;
+  final backgroundPlayer = AudioPlayer();
+  final buttonPlayer = AudioPlayer();
+
+  void startBackgroundMusic(BuildContext context) async {
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    final isPlaying = BackgroundAudio.of(context).isPlaying;
+
+    if (isPlaying.value) return;
+
+    await player.setAsset('assets/music/game.mp3');
+    player.setLoopMode(LoopMode.one);
+    player.play();
+  }
+
+  void playButtonSound() {
+    buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
+      buttonPlayer.play();
+    });
+  }
+
+  void musicStop() {
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    player.stop();
+  }
+
+  @override
+  void dispose() {
+    backgroundPlayer.dispose();
+    buttonPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      startBackgroundMusic(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +70,13 @@ class _GamePageState extends State<GamePage> {
         child: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
+            playButtonSound();
+            widget.isPlaying.value = false;
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LevelSelectionPage()),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      LevelSelectionPage(isPlaying: widget.isPlaying)),
             );
           },
         ),
@@ -70,27 +119,34 @@ class _GamePageState extends State<GamePage> {
           Spacer(),
           ElevatedButton(
             onPressed: () {
+              playButtonSound();
+              widget.isPlaying.value = false;
+              musicStop();
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => FinishPage(
+                    isPlaying: widget.isPlaying,
                     elapsedTime: _elapsedTime,
                   ),
                 ),
               );
             },
-            child: Text("Valider"),
+            child: Text("VALIDER"),
             style: SuccessButton(context),
           ),
           SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
+              playButtonSound();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => GamePage()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        GamePage(isPlaying: widget.isPlaying)),
               );
             },
-            child: Text("Recommencer"),
+            child: Text("RECOMMENCER"),
             style: DangerButton(context),
           ),
           SizedBox(height: 20),

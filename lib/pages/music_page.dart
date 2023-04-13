@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
+import 'package:masyu_game/pages/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:just_audio/just_audio.dart';
+import 'package:masyu_game/widgets/background_audio.dart';
 
 import '../Theme/Color.dart';
 
 class MusicPage extends StatefulWidget {
-  const MusicPage();
+  final ValueNotifier<bool> isPlaying;
+  MusicPage({required this.isPlaying});
 
   @override
   State<MusicPage> createState() => _MusicPageState();
@@ -44,12 +49,6 @@ class _MusicPageState extends State<MusicPage> {
   Color _musicThumbColor = Colors.white;
   Color _soundThumbColor = Colors.white;
 
-  @override
-  void initState() {
-    super.initState();
-    initMusicPage();
-  }
-
   Future<void> initMusicPage() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -74,6 +73,41 @@ class _MusicPageState extends State<MusicPage> {
       _soundThumbColor =
           _isActivatedSound[0] ? Colors.white : _activeTrackColorDisabled;
     });
+  }
+
+  final backgroundPlayer = AudioPlayer();
+  final buttonPlayer = AudioPlayer();
+
+  void startBackgroundMusic() async {
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    final isPlaying = BackgroundAudio.of(context).isPlaying;
+
+    if (isPlaying.value) return;
+
+    await player.setAsset('assets/music/menu.mp3');
+    player.setLoopMode(LoopMode.one);
+    player.play();
+    isPlaying.value = true;
+  }
+
+  void playButtonSound() {
+    buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
+      buttonPlayer.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    backgroundPlayer.dispose();
+    buttonPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initMusicPage();
+    startBackgroundMusic();
   }
 
   @override
@@ -239,10 +273,16 @@ class _MusicPageState extends State<MusicPage> {
           ),
         ),
       ),
-      SizedBox(height: verticalSpacing * 4 ),
+      SizedBox(height: verticalSpacing * 4),
       ElevatedButton(
         onPressed: () {
-          Navigator.pop(context);
+          playButtonSound();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SettingsPage(isPlaying: widget.isPlaying)),
+          );
         },
         child: Text('RETOUR'),
         style: SecondaryButton(context),

@@ -3,7 +3,53 @@ import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/pages/settings_page.dart';
 
-class AboutPage extends StatelessWidget {
+import 'package:just_audio/just_audio.dart';
+import 'package:masyu_game/widgets/background_audio.dart';
+
+class AboutPage extends StatefulWidget {
+  final ValueNotifier<bool> isPlaying;
+
+  AboutPage({required this.isPlaying});
+
+  @override
+  _AboutPageState createState() => _AboutPageState();
+}
+
+class _AboutPageState extends State<AboutPage> {
+  final backgroundPlayer = AudioPlayer();
+  final buttonPlayer = AudioPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+    startBackgroundMusic();
+  }
+
+  void startBackgroundMusic() async {
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    final isPlaying = BackgroundAudio.of(context).isPlaying;
+
+    if (isPlaying.value) return;
+
+    await player.setAsset('assets/music/menu.mp3');
+    player.setLoopMode(LoopMode.one);
+    player.play();
+    isPlaying.value = true;
+  }
+
+  void playButtonSound() {
+    buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
+      buttonPlayer.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    backgroundPlayer.dispose();
+    buttonPlayer.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Récupérer la taille de l'écran
@@ -64,9 +110,12 @@ class AboutPage extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
+                playButtonSound();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SettingsPage(isPlaying: widget.isPlaying)),
                 );
               },
             ),

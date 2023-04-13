@@ -4,12 +4,52 @@ import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/pages/settings_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import 'package:just_audio/just_audio.dart';
+import 'package:masyu_game/widgets/background_audio.dart';
+
 class RulesPage extends StatefulWidget {
+  final ValueNotifier<bool> isPlaying;
+
+  RulesPage({required this.isPlaying});
   @override
   _RulesPageState createState() => _RulesPageState();
 }
 
 class _RulesPageState extends State<RulesPage> {
+  final backgroundPlayer = AudioPlayer();
+  final buttonPlayer = AudioPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+    startBackgroundMusic();
+  }
+
+  void startBackgroundMusic() async {
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    final isPlaying = BackgroundAudio.of(context).isPlaying;
+
+    if (isPlaying.value) return;
+
+    await player.setAsset('assets/music/menu.mp3');
+    player.setLoopMode(LoopMode.one);
+    player.play();
+    isPlaying.value = true;
+  }
+
+  void playButtonSound() {
+    buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
+      buttonPlayer.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    backgroundPlayer.dispose();
+    buttonPlayer.dispose();
+    super.dispose();
+  }
+
   // Permet de savoir sur quelle slide on se trouve
   int _currentPage = 0;
   CarouselController _carouselController = CarouselController();
@@ -202,9 +242,12 @@ class _RulesPageState extends State<RulesPage> {
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
+                playButtonSound();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SettingsPage(isPlaying: widget.isPlaying)),
                 );
               },
             ),

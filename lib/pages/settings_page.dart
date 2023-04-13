@@ -7,12 +7,53 @@ import 'package:masyu_game/pages/about.dart';
 import 'package:masyu_game/pages/rules.dart';
 import 'package:masyu_game/pages/menu_page.dart';
 
+import 'package:just_audio/just_audio.dart';
+import 'package:masyu_game/widgets/background_audio.dart';
+
 class SettingsPage extends StatefulWidget {
+  final ValueNotifier<bool> isPlaying;
+
+  SettingsPage({required this.isPlaying});
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final backgroundPlayer = AudioPlayer();
+  final buttonPlayer = AudioPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+    startBackgroundMusic();
+  }
+
+  void startBackgroundMusic() async {
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    final isPlaying = BackgroundAudio.of(context).isPlaying;
+
+    if (isPlaying.value) return;
+
+    await player.setAsset('assets/music/menu.mp3');
+    player.setLoopMode(LoopMode.one);
+    player.play();
+    isPlaying.value = true;
+  }
+
+  void playButtonSound() {
+    buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
+      buttonPlayer.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    backgroundPlayer.dispose();
+    buttonPlayer.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Récupérer la taille de l'écran
@@ -38,9 +79,12 @@ class _SettingsPageState extends State<SettingsPage> {
           SizedBox(height: verticalSpacing * 2),
           ElevatedButton(
             onPressed: () {
+              playButtonSound();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MusicPage()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MusicPage(isPlaying: widget.isPlaying)),
               );
             },
             child: Text('MUSIQUE'),
@@ -49,9 +93,12 @@ class _SettingsPageState extends State<SettingsPage> {
           SizedBox(height: verticalSpacing * 1.5),
           ElevatedButton(
             onPressed: () {
+              playButtonSound();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RulesPage()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        RulesPage(isPlaying: widget.isPlaying)),
               );
             },
             child: Text('REGLES'),
@@ -60,9 +107,12 @@ class _SettingsPageState extends State<SettingsPage> {
           SizedBox(height: verticalSpacing * 1.5),
           ElevatedButton(
             onPressed: () {
+              playButtonSound();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AboutPage()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        AboutPage(isPlaying: widget.isPlaying)),
               );
             },
             child: Text('A PROPOS'),
@@ -72,9 +122,12 @@ class _SettingsPageState extends State<SettingsPage> {
           Spacer(),
           ElevatedButton(
             onPressed: () {
+              playButtonSound();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MenuPage()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MenuPage(isPlaying: widget.isPlaying)),
               );
             },
             child: Text('RETOUR'),
