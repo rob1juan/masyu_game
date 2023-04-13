@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/core/score_board_utils.dart';
+import 'package:masyu_game/models/score_board_entry_model.dart';
+import 'package:masyu_game/pages/classement_page.dart';
 import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
@@ -8,8 +11,9 @@ import 'package:clipboard/clipboard.dart';
 class FinishPage extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
   final Duration elapsedTime;
+  int level = 11;
 
-  FinishPage({required this.elapsedTime});
+  FinishPage({required this.elapsedTime, required this.level});
 
   void _shareScore(BuildContext context) {
     String playerName = _textController.text;
@@ -39,6 +43,26 @@ class FinishPage extends StatelessWidget {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0));
+    }
+  }
+
+  Future<void> displayScoreBoard(BuildContext context) async {
+    String playerName = _textController.text;
+
+    if (playerName.isEmpty) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoadScoreBoardWidget(level)));
+    } else {
+      double score = elapsedTime.inMinutes.toDouble() +
+          (elapsedTime.inSeconds.toDouble() % 60) / 60;
+      int id = await saveScore(
+          ScoreBoardEntry(name: playerName, score: score, level: level));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoadScoreBoardWidget(level, id: id)));
     }
   }
 
@@ -125,12 +149,8 @@ class FinishPage extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.1),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LevelSelectionPage()),
-                    );
+                  onPressed: () async {
+                    await displayScoreBoard(context);
                   },
                   child: const Text('VALIDER'),
                   style: SuccessButton(context),

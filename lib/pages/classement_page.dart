@@ -1,30 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:masyu_game/core/score_board_utils.dart';
 import 'package:masyu_game/pages/difficulty_selection_page.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/models/score_board_entry_model.dart';
+import 'package:masyu_game/pages/level_selection_page.dart';
 
-class classement_page extends StatelessWidget {
+class LoadScoreBoardWidget extends StatelessWidget {
   int level = 0;
   int? id;
-  classement_page(int lvl, {int? id}) {
+
+  LoadScoreBoardWidget(int lvl, {int? id}) {
     this.level = lvl;
     this.id = id ?? -1;
   }
 
-  List<ScoreBoardEntry> players = [
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1)
-  ];
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: fetchData(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.hasData) {
+          return classement_page(snapshot.data, id != -1, level);
+        } else if (snapshot.hasError) {
+          Fluttertoast.showToast(
+              msg: "Impossible de récupérer la classement.",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          return Container();
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Future<dynamic> fetchData() async {
+    List<ScoreBoardEntry> scores = await getScores(level);
+    return scores;
+  }
+}
+
+class classement_page extends StatelessWidget {
+  List<ScoreBoardEntry> scores = [];
+  bool isActual = true;
+  int level = 11;
+
+  classement_page(List<ScoreBoardEntry> scores, bool isActual, int level) {
+    this.scores = scores;
+    this.isActual = isActual;
+    this.level = level;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +66,35 @@ class classement_page extends StatelessWidget {
     // Définir des tailles responsives pour les espacements
     double verticalSpacing = screenHeight * 0.025;
     double topSpacing = screenHeight * 0.05;
-
+    if (scores.isEmpty) {
+      return Scaffold(
+          body: Stack(
+              children: BuildBasicLayout([
+        SizedBox(height: topSpacing * 3),
+        Container(
+          width: screenWidth * 0.8,
+          child: const Text(
+            "Pas encore de classement dispoinible pour ce niveau, à vous de jouer!",
+            style: TextStyle(
+                fontSize: 23, color: Colors.white, fontWeight: FontWeight.w600),
+          ),
+        ),
+        SizedBox(height: verticalSpacing * 6),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      LevelSelectionPage(int.parse(level.toString()[0]))),
+            );
+          },
+          style: SecondaryButton(context),
+          child: const Text('RETOUR'),
+        )
+      ], false)));
+    }
+    int nbScores = isActual ? scores.length - 1 : scores.length;
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
@@ -55,30 +114,19 @@ class classement_page extends StatelessWidget {
                   behavior: ScrollConfiguration.of(context)
                       .copyWith(scrollbars: false),
                   child: ListView.builder(
-                      itemCount:
-                          players.length - 1, // nombre d'éléments dans la liste
+                      itemCount: nbScores,
                       itemBuilder: (context, index) =>
-                          ScoreRow(context, index + 1, players[index], false)),
+                          ScoreRow(context, index + 1, scores[index], false)),
                 ),
               ),
-              Divider(
-                color: Colors.white.withOpacity(0.35),
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-              ScoreRow(context, players.length - 1, players[players.length - 1],
-                  true),
             ]),
           ),
-          Spacer(),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            style: SecondaryButton(context),
-            child: const Text('RETOUR'),
-          ),
+          Expanded(
+              flex: 9,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: footer(context),
+              )),
         ], false),
       ),
     );
@@ -86,8 +134,11 @@ class classement_page extends StatelessWidget {
 
   Widget ScoreRow(
       BuildContext context, int index, ScoreBoardEntry score, bool isActual) {
-        double screenHeight = MediaQuery.of(context).size.height;
-        double verticalSpacing = screenHeight * 0.025;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double verticalSpacing = screenHeight * 0.025;
+    int minutes = score.score.floor();
+    int seconds = ((score.score - minutes) * 60).floor();
+    String stringScore = minutes.toString() + " : " + seconds.toString();
     return Column(children: [
       Container(
           height: verticalSpacing * 2.4,
@@ -108,7 +159,7 @@ class classement_page extends StatelessWidget {
             Expanded(
                 flex: 5,
                 child: Text(
-                  score.name, //ICI
+                  score.name,
                   style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
@@ -119,7 +170,7 @@ class classement_page extends StatelessWidget {
             Expanded(
                 flex: 3,
                 child: Text(
-                  score.score.toString(), //ICI
+                  stringScore,
                   style: const TextStyle(fontSize: 20.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
@@ -128,5 +179,61 @@ class classement_page extends StatelessWidget {
         height: 6,
       ),
     ]);
+  }
+
+  Widget footer(BuildContext context) {
+    if (!isActual) {
+      return Column(
+        children: [
+          const Spacer(
+            flex: 1,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        LevelSelectionPage(int.parse(level.toString()[0]))),
+              );
+            },
+            style: SecondaryButton(context),
+            child: const Text('RETOUR'),
+          ),
+          const Spacer(
+            flex: 1,
+          ),
+        ],
+      );
+    }
+    return Column(
+      children: [
+        Divider(
+          color: Colors.white.withOpacity(0.35),
+        ),
+        const SizedBox(
+          height: 6,
+        ),
+        ScoreRow(context, scores.length, scores[scores.length - 1], true),
+        const Spacer(
+          flex: 1,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      LevelSelectionPage(int.parse(level.toString()[0]))),
+            );
+          },
+          style: SecondaryButton(context),
+          child: const Text('RETOUR'),
+        ),
+        const Spacer(
+          flex: 1,
+        ),
+      ],
+    );
   }
 }

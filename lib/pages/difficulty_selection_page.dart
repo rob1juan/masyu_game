@@ -32,7 +32,7 @@ class DifficultySelectionPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LevelSelectionPage()),
+                MaterialPageRoute(builder: (context) => LevelSelectionPage(1)),
               );
             },
             child: Text('FACILE'),
@@ -43,7 +43,7 @@ class DifficultySelectionPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LevelSelectionPage()),
+                MaterialPageRoute(builder: (context) => LevelSelectionPage(2)),
               );
             },
             child: Text('MOYEN'),
@@ -54,7 +54,7 @@ class DifficultySelectionPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LevelSelectionPage()),
+                MaterialPageRoute(builder: (context) => LevelSelectionPage(3)),
               );
             },
             child: Text('DIFFICILE'),

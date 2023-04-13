@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/pages/finish_page.dart';
 import 'package:masyu_game/pages/game_page.dart';
 import 'package:masyu_game/pages/difficulty_selection_page.dart';
 import 'package:masyu_game/widgets/game.dart';
@@ -7,6 +8,12 @@ import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/pages/classement_page.dart';
 
 class LevelSelectionPage extends StatelessWidget {
+  int difficulty = 1;
+
+  LevelSelectionPage(int difficulty) {
+    this.difficulty = difficulty;
+  }
+
   @override
   Widget build(BuildContext context) {
     // Récupérer la taille de l'écran
@@ -21,12 +28,20 @@ class LevelSelectionPage extends StatelessWidget {
     double buttonWidth = screenWidth * 0.3;
     double buttonHeight = screenHeight * 0.075;
 
+    String title = "";
+    if(difficulty == 1){
+      title = "FACILE";
+    }else if(difficulty == 2){
+      title = "MOYEN";
+    }else{
+      title = "DIFFICILE";
+    }
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
           SizedBox(height: topSpacing * 1.5),
           Text(
-            'CHOIX DU NIVEAU',
+            title,
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -41,9 +56,18 @@ class LevelSelectionPage extends StatelessWidget {
                   SizedBox(height: topSpacing),
                   ElevatedButton(
                     onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => GamePage()),
+                      // );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => GamePage()),
+                        MaterialPageRoute(
+                          builder: (context) => FinishPage(
+                            elapsedTime: Duration(minutes: 0, seconds: 27),
+                            level: int.parse(difficulty.toString() + '1'),
+                          ),
+                        ),
                       );
                     },
                     child: Text('NIVEAU 1'),
@@ -51,19 +75,49 @@ class LevelSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FinishPage(
+                            elapsedTime: Duration(minutes: 1, seconds: 27),
+                            level: int.parse(difficulty.toString() + '2'),
+                          ),
+                        ),
+                      );
+                    },
                     child: Text('NIVEAU 2'),
                     style: PrimaryButton(context),
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FinishPage(
+                            elapsedTime: Duration(minutes: 1, seconds: 27),
+                            level: int.parse(difficulty.toString() + '3'),
+                          ),
+                        ),
+                      );
+                    },
                     child: Text('NIVEAU 3'),
                     style: PrimaryButton(context),
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FinishPage(
+                            elapsedTime: Duration(minutes: 1, seconds: 27),
+                            level: int.parse(difficulty.toString() + '4'),
+                          ),
+                        ),
+                      );
+                    },
                     child: Text('NIVEAU 4'),
                     style: PrimaryButton(context),
                   ),
@@ -78,7 +132,8 @@ class LevelSelectionPage extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => classement_page(99)));
+                              builder: (context) => LoadScoreBoardWidget(
+                                  int.parse(difficulty.toString() + '1'))));
                     },
                     child: Image.asset(
                       'assets/poduim.png',
@@ -91,7 +146,13 @@ class LevelSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoadScoreBoardWidget(
+                                  int.parse(difficulty.toString() + '2'))));
+                    },
                     child: Image.asset(
                       'assets/poduim.png',
                       fit: BoxFit.cover,
@@ -103,7 +164,13 @@ class LevelSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoadScoreBoardWidget(
+                                  int.parse(difficulty.toString() + '3'))));
+                    },
                     child: Image.asset(
                       'assets/poduim.png',
                       fit: BoxFit.cover,
@@ -115,7 +182,13 @@ class LevelSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: verticalSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoadScoreBoardWidget(
+                                  int.parse(difficulty.toString() + '4'))));
+                    },
                     child: Image.asset(
                       'assets/poduim.png',
                       fit: BoxFit.cover,
