@@ -3,9 +3,11 @@ import 'package:just_audio/just_audio.dart';
 
 class BackgroundAudio extends InheritedWidget {
   final AudioPlayer backgroundPlayer;
+  final ValueNotifier<bool> isPlaying;
 
   BackgroundAudio({
     required this.backgroundPlayer,
+    required this.isPlaying,
     required Widget child,
   }) : super(child: child);
 
@@ -15,6 +17,7 @@ class BackgroundAudio extends InheritedWidget {
 
   @override
   bool updateShouldNotify(BackgroundAudio oldWidget) {
-    return oldWidget.backgroundPlayer != backgroundPlayer;
+    return oldWidget.backgroundPlayer != backgroundPlayer ||
+        oldWidget.isPlaying != isPlaying;
   }
 }
