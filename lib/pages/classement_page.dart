@@ -42,66 +42,69 @@ class classement_page extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.07,
           ),
-          const Text(
-            "CLASSEMENT",
-            style: TextStyle(
-                fontSize: 23, color: Colors.white, fontWeight: FontWeight.w600),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
+          const Expanded(
+            flex: 1,
+            child: Text(
+              "CLASSEMENT",
+              style: TextStyle(
+                  fontSize: 23,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           Container(
             height: 200,
             width: MediaQuery.of(context).size.width * 0.8,
             child: ScrollConfiguration(
-                behavior:
-                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                child: ListView.builder(
-                    itemCount:
-                        players.length, // nombre d'éléments dans la liste
-                    itemBuilder: (context, index) => Column(children: [
-                          Container(
-                              height: 30,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(children: [
-                                Expanded(
-                                    flex: 2,
-                                    child: Text(
-                                      players[index], //ICI
-                                      style: const TextStyle(
-                                          fontSize: 16.0, color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    )),
-                                Expanded(
-                                    flex: 5,
-                                    child: Text(
-                                      "Mathéo", //ICI
-                                      style: const TextStyle(
-                                          fontSize: 16.0, color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    )),
-                                Expanded(
-                                    flex: 3,
-                                    child: Text(
-                                      "59:30", //ICI
-                                      style: const TextStyle(
-                                          fontSize: 16.0, color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    )),
-                              ])),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ]))),
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              child: ListView.builder(
+                  itemCount: players.length, // nombre d'éléments dans la liste
+                  itemBuilder: (context, index) => Column(children: [
+                        Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    players[index], //ICI
+                                    style: const TextStyle(
+                                        fontSize: 16.0, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  )),
+                              Expanded(
+                                  flex: 5,
+                                  child: Text(
+                                    "Mathéo", //ICI
+                                    style: const TextStyle(
+                                        fontSize: 16.0, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  )),
+                              Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    "59:30", //ICI
+                                    style: const TextStyle(
+                                        fontSize: 16.0, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  )),
+                            ])),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ])),
+            ),
           ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height - 560,
-            child: footer(context),
-          )
+          Expanded(
+              flex: 3,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: footer(context),
+              )),
         ], false),
       ),
     );
@@ -163,15 +166,19 @@ class classement_page extends StatelessWidget {
                 )),
           ]),
         ),
-        const Expanded(flex: 1, child: SizedBox()),
+        const Spacer(
+          flex: 1,
+        ),
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('RETOUR'),
           style: SecondaryButton(context),
+          child: const Text('RETOUR'),
         ),
-        const Expanded(flex: 1, child: SizedBox()),
+        const Spacer(
+          flex: 1,
+        ),
       ],
     );
   }
