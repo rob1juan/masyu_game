@@ -3,6 +3,7 @@ import 'package:masyu_game/pages/menu_page.dart';
 import 'package:masyu_game/Theme/Color.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
