@@ -22,7 +22,16 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
-          SizedBox(height: topSpacing * 2),
+          SizedBox(height: topSpacing * 1.5),
+          Text(
+            'OPTIONS',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: verticalSpacing * 2),
           ElevatedButton(
             onPressed: () {
               Navigator.push(

@@ -3,7 +3,6 @@ import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:clipboard/clipboard.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 class FinishPage extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();

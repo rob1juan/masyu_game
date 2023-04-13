@@ -4,7 +4,16 @@ import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/pages/settings_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class RulesPage extends StatelessWidget {
+class RulesPage extends StatefulWidget {
+  @override
+  _RulesPageState createState() => _RulesPageState();
+}
+
+class _RulesPageState extends State<RulesPage> {
+  // Permet de savoir sur quelle slide on se trouve
+  int _currentPage = 0;
+  CarouselController _carouselController = CarouselController();
+
   @override
   Widget build(BuildContext context) {
     // Récupérer la taille de l'écran
@@ -13,7 +22,17 @@ class RulesPage extends StatelessWidget {
 
     // Créer le carrousel slider
     final carouselSlider = CarouselSlider(
-      options: CarouselOptions(height: screenHeight * 0.7, autoPlay: false),
+      carouselController: _carouselController,
+      options: CarouselOptions(
+        height: screenHeight * 0.7,
+        viewportFraction: 1,
+        autoPlay: false,
+        onPageChanged: (index, reason) {
+          setState(() {
+            _currentPage = index;
+          });
+        },
+      ),
       items: [
         // Première slide
         Container(
@@ -108,13 +127,13 @@ class RulesPage extends StatelessWidget {
               Image.asset(
                 'assets/regle-n-vrai.png',
                 fit: BoxFit.contain,
-                height: 170,
+                height: 130,
               ),
               SizedBox(height: screenHeight * 0.05),
               Image.asset(
                 'assets/regle-n-faux.png',
                 fit: BoxFit.contain,
-                height: 170,
+                height: 130,
               ),
             ],
           ),
@@ -172,7 +191,8 @@ class RulesPage extends StatelessWidget {
                         fontSize: 25)),
                 SizedBox(height: screenHeight * 0.1),
                 carouselSlider, // Ajouter le carrousel slider
-                SizedBox(height: screenHeight * 0.05),
+                buildPageIndicators(
+                    carouselSlider.items?.length ?? 0, _currentPage),
               ]),
             ),
           ),
@@ -191,6 +211,30 @@ class RulesPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildPageIndicators(int numPages, int currentPage) {
+    List<Widget> indicators = [];
+
+    for (int i = 0; i < numPages; i++) {
+      indicators.add(
+        Container(
+          width: i == currentPage ? 12.0 : 8.0,
+          height: 8.0,
+          margin: EdgeInsets.symmetric(horizontal: 4.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color:
+                i == currentPage ? Colors.white : Colors.white.withOpacity(0.4),
+          ),
+        ),
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: indicators,
     );
   }
 }
