@@ -215,8 +215,11 @@ class Plateau {
       }
 
       if (visitedCoordinates.contains(adjacentLine.start) &&
-          visitedCoordinates.last != adjacentLine.start) {
-        return false;
+          (visitedCoordinates.last != adjacentLine.start)) {
+        if (visitedCoordinates.contains(adjacentLine.end) &&
+            (visitedCoordinates.last != adjacentLine.end)) {
+          return false;
+        }
       }
 
       remainingLines.remove(adjacentLine);
