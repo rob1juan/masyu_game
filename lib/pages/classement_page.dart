@@ -8,7 +8,7 @@ class classement_page extends StatelessWidget {
   int? id;
   classement_page(int lvl, {int? id}) {
     this.level = lvl;
-    this.id = id;
+    this.id = id ?? -1;
   }
 
   List<String> players = [
@@ -109,19 +109,21 @@ class classement_page extends StatelessWidget {
   }
 
   Widget footer(BuildContext context) {
-    if (id == Null) {
+    if (id == -1) {
       return Column(
         children: [
+          const Spacer(
+            flex: 1,
+          ),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DifficultySelectionPage()),
-              );
+              Navigator.pop(context);
             },
-            child: const Text('RETOUR'),
             style: SecondaryButton(context),
+            child: const Text('RETOUR'),
+          ),
+          const Spacer(
+            flex: 1,
           ),
         ],
       );
