@@ -34,6 +34,18 @@ class _GameBoardState extends State<GameBoard> {
     return vector.Vector2(x.toDouble(), y.toDouble());
   }
 
+  vector.Vector2 correctEndPoint(vector.Vector2 start, vector.Vector2 end) {
+    double distance = start.distanceTo(end);
+
+    if (distance > 1) {
+      double deltaX = (end.x - start.x) / distance;
+      double deltaY = (end.y - start.y) / distance;
+      end = vector.Vector2(start.x + deltaX, start.y + deltaY);
+    }
+
+    return end;
+  }
+
   bool _isLineDiagonal(vector.Vector2 start, vector.Vector2 end) {
     return start.x != end.x && start.y != end.y;
   }
@@ -83,18 +95,16 @@ class _GameBoardState extends State<GameBoard> {
                   currentGridPos != _dragStart &&
                   !_isLineDiagonal(_dragStart!, currentGridPos)) {
                 setState(() {
-                  int lineIndex = _getLineIndex(_dragStart!, currentGridPos);
+                  int lineIndex = _getLineIndex(_dragStart!, currentGridPos!);
                   if (lineIndex != -1) {
-                    setState(() {
-                      plateau.lines.removeAt(lineIndex);
-                      plateau.CheckValidity();
-                    });
+                    plateau.lines.removeAt(lineIndex);
+                    plateau.CheckValidity();
                   } else {
-                    setState(() {
-                      plateau.lines
-                          .add(Line(start: _dragStart!, end: currentGridPos));
-                      plateau.CheckValidity();
-                    });
+                    currentGridPos =
+                        correctEndPoint(_dragStart!, currentGridPos!);
+                    plateau.lines
+                        .add(Line(start: _dragStart!, end: currentGridPos!));
+                    plateau.CheckValidity();
                   }
                   _dragStart = currentGridPos;
                 });
@@ -114,8 +124,10 @@ class _GameBoardState extends State<GameBoard> {
                 children: [
                   CustomPaint(
                     size: Size(constraints.maxWidth, constraints.maxWidth),
-                    painter:
-                        LinePainter(lines: plateau.lines, gridSize: gridSize),
+                    painter: LinePainter(
+                        lines: plateau.lines,
+                        gridSize: gridSize,
+                        isValid: plateau.validPath),
                   ),
                   GridView.builder(
                     padding: EdgeInsets.zero,
@@ -188,13 +200,15 @@ class _GameBoardState extends State<GameBoard> {
 class LinePainter extends CustomPainter {
   final List<Line> lines;
   final double gridSize;
+  final bool isValid;
 
-  LinePainter({required this.lines, required this.gridSize});
+  LinePainter(
+      {required this.lines, required this.gridSize, required this.isValid});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Color.fromARGB(255, 255, 255, 255)
+      ..color = Colors.white
       ..strokeWidth = 6
       ..strokeCap = StrokeCap.round;
 

@@ -1,5 +1,6 @@
 import 'package:masyu_game/models/line.dart';
 import 'package:vector_math/vector_math_64.dart';
+import 'package:collection/collection.dart';
 import 'case.dart';
 import 'dart:math';
 
@@ -7,6 +8,7 @@ class Plateau {
   int taille;
   late List<List<Case>> grille;
   late List<Line> lines;
+  late bool validPath;
 
   Plateau({required this.taille}) {
     grille = List.generate(
@@ -16,6 +18,7 @@ class Plateau {
             (y) => Case.coordinate(
                 position: Vector2(y.toDouble(), x.toDouble()))));
     lines = List.empty(growable: true);
+    validPath = false;
     initializeCercles();
   }
 
@@ -38,6 +41,7 @@ class Plateau {
         checkCaseValidity(grille[j][i]);
       }
     }
+    validPath = isPathValid();
   }
 
   void checkCaseValidity(Case currentCase) {
@@ -143,6 +147,18 @@ class Plateau {
     return adjacentLines;
   }
 
+  List<Line> findAdjacentLinesInList(Vector2 coord, List<Line> list) {
+    List<Line> adjacentLines = [];
+
+    for (Line line in list) {
+      if (line.start == coord || line.end == coord) {
+        adjacentLines.add(line);
+      }
+    }
+
+    return adjacentLines;
+  }
+
   bool areLinesPerpendicular(Line line1, Line line2) {
     Vector2 start1 = line1.start;
     Vector2 end1 = line1.end;
@@ -153,7 +169,7 @@ class Plateau {
     double angle2 = atan2(end2.y - start2.y, end2.x - start2.x);
 
     // We calculate the absolute difference of the angles and check if it's equal to 90 degrees
-    return ((angle1 - angle2).abs() == pi / 2);
+    return ((angle1 - angle2).abs() - pi / 2).abs() < 0.001;
   }
 
   bool areLinesAligned(Line line1, Line line2) {
@@ -167,5 +183,44 @@ class Plateau {
 
     // We calculate the absolute difference of the angles and check if it's less than a small number
     return ((angle1 - angle2).abs() < 0.001);
+  }
+
+  bool isPathValid() {
+    List<Line> remainingLines = List.from(lines);
+    Line firstLine;
+    List<Vector2> visitedCoordinates = [];
+
+    if (remainingLines.isEmpty) {
+      return false;
+    }
+
+    Line currentLine = firstLine = remainingLines.removeAt(0);
+    visitedCoordinates.add(currentLine.start);
+
+    while (remainingLines.isNotEmpty) {
+      Line? adjacentLine = remainingLines.firstWhereOrNull((line) =>
+          (line.start == currentLine.end || line.end == currentLine.end) ||
+          (line.start == currentLine.start || line.end == currentLine.start));
+
+      if (adjacentLine == null) {
+        return false;
+      }
+
+      if (visitedCoordinates.contains(adjacentLine.start) &&
+          visitedCoordinates.last != adjacentLine.start) {
+        return false;
+      }
+
+      remainingLines.remove(adjacentLine);
+      visitedCoordinates.add(adjacentLine.start == currentLine.end
+          ? adjacentLine.end
+          : adjacentLine.start == currentLine.start
+              ? adjacentLine.end
+              : adjacentLine.start);
+      currentLine = adjacentLine;
+    }
+
+    return firstLine.start == visitedCoordinates.last ||
+        firstLine.end == visitedCoordinates.last;
   }
 }
