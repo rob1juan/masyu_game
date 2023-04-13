@@ -5,8 +5,14 @@ import 'package:masyu_game/widgets/game.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/pages/classement_page.dart';
+import 'package:just_audio/just_audio.dart';
 
-class LevelSelectionPage extends StatelessWidget {
+class LevelSelectionPage extends StatefulWidget {
+  @override
+  _LevelSelectionPageState createState() => _LevelSelectionPageState();
+}
+
+class _LevelSelectionPageState extends State<LevelSelectionPage> {
   @override
   Widget build(BuildContext context) {
     // Récupérer la taille de l'écran

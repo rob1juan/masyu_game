@@ -12,8 +12,6 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  bool isPlaying = false;
-
   final backgroundPlayer = AudioPlayer();
   final buttonPlayer = AudioPlayer();
 
@@ -24,7 +22,7 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Future<void> initBackgroundAudio() async {
-    if (!isPlaying) {
+    if (!backgroundPlayer.playing) {
       await backgroundPlayer.setAsset('assets/music/menu.mp3');
       backgroundPlayer.setLoopMode(LoopMode.one);
       backgroundPlayer.play();
