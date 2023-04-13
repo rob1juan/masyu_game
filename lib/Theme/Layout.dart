@@ -53,3 +53,17 @@ List<Widget> BuildFinishLayout(List<Widget> children) {
     ))
   ];
 }
+
+List<Widget> BuildSettingLayout(List<Widget> children) {
+  return [
+    BackgroundGradient,
+    Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+            SizedBox(height: 50),
+          ] +
+          children,
+    ))
+  ];
+}

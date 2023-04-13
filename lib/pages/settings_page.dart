@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 
+import 'package:masyu_game/pages/about.dart';
+import 'package:masyu_game/pages/rules.dart';
+import 'package:masyu_game/pages/menu_page.dart';
+
+import 'package:masyu_game/pages/music_page.dart';
+
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,10 +22,22 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
-          SizedBox(height: topSpacing * 2),
+          SizedBox(height: topSpacing * 1.5),
+          Text(
+            'OPTIONS',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: verticalSpacing * 2),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MusicPage()),
+              );
             },
             child: Text('MUSIQUE'),
             style: YellowButton(context),
@@ -27,7 +45,10 @@ class SettingsPage extends StatelessWidget {
           SizedBox(height: verticalSpacing * 1.5),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RulesPage()),
+              );
             },
             child: Text('REGLES'),
             style: WarningButton(context),
@@ -35,7 +56,10 @@ class SettingsPage extends StatelessWidget {
           SizedBox(height: verticalSpacing * 1.5),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutPage()),
+              );
             },
             child: Text('A PROPOS'),
             style: PrimaryButton(context),
@@ -44,7 +68,10 @@ class SettingsPage extends StatelessWidget {
           Spacer(),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MenuPage()),
+              );
             },
             child: Text('RETOUR'),
             style: SecondaryButton(context),

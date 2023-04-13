@@ -6,7 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
-//import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../core/score_board_utils.dart';
 import '../models/score_board_entry_model.dart';
@@ -38,11 +38,12 @@ class _MyWidgetState extends State<CassementPage> {
               child: Text('Enregistrer le score'),
               onPressed: () async {
                 double score = Random().nextDouble() * 100;
-                ScoreBoardEntry s =
-                    ScoreBoardEntry(name: 'Fido', score: score, level: 11);
-                var text = await saveScore(s).toString();
+                ScoreBoardEntry s = ScoreBoardEntry(name: 'Fido', score: score, level: 11);
+                int text = await saveScore(s);
+                String id = text.toString();
                 setState(() {
-                  _displayText = text;
+                  _displayText = id;
+                  getScores(11);
                 });
               },
             ),
