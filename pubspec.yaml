@@ -33,8 +33,8 @@ dependencies:
     
   flame: ^1.0.0-releasecandidate.16
 
+  # Package pour tracer les lignes
   vector_math: ^2.1.0
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,11 +43,17 @@ dependencies:
   sqflite_common_ffi: ^2.2.3
   moor_flutter: ^4.0.0
   sqlite3_flutter_libs: ^0.5.13
+  shared_preferences: ^2.1.0
+
+  # Package pour copier coller
   fluttertoast: ^8.0.7
   clipboard: ^0.1.2+1
   universal_platform: ^1.0.0+1
 
   carousel_slider: ^4.0.0
+  
+  #Package pour les musiques
+  audioplayers: ^0.20.1
 
 dev_dependencies:
   flutter_test:

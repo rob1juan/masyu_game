@@ -6,6 +6,8 @@ import 'package:masyu_game/pages/about.dart';
 import 'package:masyu_game/pages/rules.dart';
 import 'package:masyu_game/pages/menu_page.dart';
 
+import 'package:masyu_game/pages/music_page.dart';
+
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,9 +22,23 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: BuildBasicLayout([
-          SizedBox(height: topSpacing * 2),
+          SizedBox(height: topSpacing * 1.5),
+          Text(
+            'OPTIONS',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: verticalSpacing * 2),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MusicPage()),
+              );
+            },
             child: Text('MUSIQUE'),
             style: YellowButton(context),
           ),
