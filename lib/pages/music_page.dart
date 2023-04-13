@@ -78,9 +78,18 @@ class _MusicPageState extends State<MusicPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Récupérer la taille de l'écran
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    // Définir des tailles responsives pour les espacements
+    double verticalSpacing = screenHeight * 0.025;
+    double topSpacing = screenHeight * 0.05;
+
     return Scaffold(
         body: Stack(
             children: BuildBasicLayout([
+      SizedBox(height: topSpacing * 1.5),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -89,7 +98,6 @@ class _MusicPageState extends State<MusicPage> {
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                   fontSize: 20)),
-          SizedBox(height: 10),
           ToggleButtons(
             isSelected: _isActivatedMusic,
             onPressed: (int index) async {
@@ -119,7 +127,7 @@ class _MusicPageState extends State<MusicPage> {
         ],
       ),
       SizedBox(
-        width: MediaQuery.of(context).size.width * 0.8,
+        width: screenWidth * 0.8,
         child: SliderTheme(
           data: SliderTheme.of(context).copyWith(
             thumbColor: _musicThumbColor,
@@ -156,8 +164,7 @@ class _MusicPageState extends State<MusicPage> {
           ),
         ),
       ),
-      SizedBox(height: 10),
-      SizedBox(height: 50),
+      SizedBox(height: verticalSpacing * 2.5),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -166,7 +173,6 @@ class _MusicPageState extends State<MusicPage> {
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                   fontSize: 20)),
-          SizedBox(height: 10),
           ToggleButtons(
             isSelected: _isActivatedSound,
             onPressed: (int index) async {
@@ -195,9 +201,8 @@ class _MusicPageState extends State<MusicPage> {
           ),
         ],
       ),
-      SizedBox(height: 10),
       SizedBox(
-        width: MediaQuery.of(context).size.width * 0.8,
+        width: screenWidth * 0.8,
         child: SliderTheme(
           data: SliderTheme.of(context).copyWith(
             thumbColor: _soundThumbColor,
@@ -234,15 +239,14 @@ class _MusicPageState extends State<MusicPage> {
           ),
         ),
       ),
-      SizedBox(height: 50),
+      SizedBox(height: verticalSpacing * 4 ),
       ElevatedButton(
         onPressed: () {
           Navigator.pop(context);
         },
         child: Text('RETOUR'),
-        style: SecondaryButton,
+        style: SecondaryButton(context),
       ),
-      SizedBox(height: 75),
     ], false)));
   }
 }
