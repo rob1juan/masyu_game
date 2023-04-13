@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
-import 'package:audioplayers/audioplayers.dart';
+
 import 'package:masyu_game/pages/about.dart';
 import 'package:masyu_game/pages/rules.dart';
 import 'package:masyu_game/pages/menu_page.dart';

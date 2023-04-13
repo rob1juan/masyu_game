@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:masyu_game/class/plateau.dart';
 import 'package:masyu_game/class/case.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
-import 'package:audioplayers/audioplayers.dart';
 
 class GameBoard extends StatefulWidget {
   @override
