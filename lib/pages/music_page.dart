@@ -52,6 +52,18 @@ class _MusicPageState extends State<MusicPage> {
 
   Future<void> initMusicPage() async {
     prefs = await SharedPreferences.getInstance();
+    if(!prefs.containsKey('musicValue')){
+      await prefs.setDouble('musicValue', 75.0);
+    }
+    if(!prefs.containsKey('soundValue')){
+      await prefs.setDouble('soundValue', 75.0);
+    }
+    if(!prefs.containsKey('musicIsActivated')){
+      await prefs.setBool('musicIsActivated', true);
+    }
+    if(!prefs.containsKey('soundIsActivated')){
+      await prefs.setBool('soundIsActivated', true);
+    }
     setState(() {
       _currentMusicValue = prefs.getDouble('musicValue');
       _currentSoundValue = prefs.getDouble('soundValue');
