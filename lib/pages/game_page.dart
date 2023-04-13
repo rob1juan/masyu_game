@@ -83,6 +83,7 @@ class _GamePageState extends State<GamePage> {
           onPressed: () {
             playButtonSound();
             widget.isPlaying.value = false;
+            musicStop();
             Navigator.push(
               context,
               MaterialPageRoute(

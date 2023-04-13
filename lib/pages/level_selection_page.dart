@@ -24,16 +24,17 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
   final backgroundPlayer = AudioPlayer();
   final buttonPlayer = AudioPlayer();
 
-  void startBackgroundMusic() async {
+  void startBackgroundMusic(bool isPlaying) async {
     final player = BackgroundAudio.of(context).backgroundPlayer;
-    final isPlaying = BackgroundAudio.of(context).isPlaying;
 
-    if (isPlaying.value) return;
+    if (isPlaying) return;
 
     await player.setAsset('assets/music/menu.mp3');
     player.setLoopMode(LoopMode.one);
     player.play();
-    isPlaying.value = true;
+    if (!isPlaying) {
+      widget.isPlaying.value = true;
+    }
   }
 
   void playButtonSound() async {
@@ -62,11 +63,11 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
   @override
   void initState() {
     super.initState();
-    startBackgroundMusic();
   }
 
   @override
   Widget build(BuildContext context) {
+    startBackgroundMusic(widget.isPlaying.value);
     // Récupérer la taille de l'écran
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
