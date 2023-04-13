@@ -39,11 +39,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  sqflite: ^2.2.6
 
   # Package pour copier coller
   fluttertoast: ^8.0.7
   clipboard: ^0.1.2+1
 
+  carousel_slider: ^4.0.0
+  
   #Package pour les musiques
   audioplayers: ^0.20.1
 
@@ -73,6 +76,16 @@ flutter:
   assets:
     - assets/logo.png
     - assets/poduim.png
+    - assets/puzzle-masyu.png
+    - assets/regle-b-vrai.png
+    - assets/regle-b-faux.png
+    - assets/regle-n-vrai.png
+    - assets/regle-n-faux.png
+    - assets/Cat.gif
+    - assets/Cat2.gif
+    - assets/music/menu.mp3
+    - assets/music/game.mp3
+    - assets/music/finish.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
