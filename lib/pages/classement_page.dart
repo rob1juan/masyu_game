@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:masyu_game/pages/difficulty_selection_page.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
+import 'package:masyu_game/models/score_board_entry_model.dart';
 
 class classement_page extends StatelessWidget {
   int level = 0;
@@ -11,27 +12,18 @@ class classement_page extends StatelessWidget {
     this.id = id ?? -1;
   }
 
-  List<String> players = [
-    "p1",
-    "p2",
-    "p3",
-    "p4",
-    "p5",
-    "p6",
-    "p7",
-    "p8",
-    "p9",
-    "p10",
-    "p11",
-    "p12",
-    "p13",
-    "p14",
-    "p15",
-    "p16",
-    "p17",
-    "p18",
-    "p19",
-    "p20",
+  List<ScoreBoardEntry> players = [
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
+    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1)
   ];
 
   @override
@@ -51,70 +43,32 @@ class classement_page extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.03,
           ),
           Container(
-            height: 227,
             width: MediaQuery.of(context).size.width * 0.8,
-            child: ScrollConfiguration(
-              behavior:
-                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
-              child: ListView.builder(
-                  itemCount: players.length, // nombre d'éléments dans la liste
-                  itemBuilder: (context, index) => Column(children: [
-                        Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    players[index], //ICI
-                                    style: const TextStyle(
-                                        fontSize: 16.0, color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  )),
-                              Expanded(
-                                  flex: 5,
-                                  child: Text(
-                                    "Mathéo", //ICI
-                                    style: const TextStyle(
-                                        fontSize: 16.0, color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  )),
-                              Expanded(
-                                  flex: 3,
-                                  child: Text(
-                                    "59:30", //ICI
-                                    style: const TextStyle(
-                                        fontSize: 16.0, color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  )),
-                            ])),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ])),
-            ),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                height: 60 * 5,
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context)
+                      .copyWith(scrollbars: false),
+                  child: ListView.builder(
+                      itemCount:
+                          players.length - 1, // nombre d'éléments dans la liste
+                      itemBuilder: (context, index) =>
+                          ScoreRow(context, index, players[index], false)),
+                ),
+              ),
+              Divider(
+                color: Colors.white.withOpacity(0.35),
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              ScoreRow(context, players.length - 1, players[players.length - 1],
+                  true),
+            ]),
           ),
-          Expanded(
-              flex: 9,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: footer(context),
-              )),
-        ], false),
-      ),
-    );
-  }
-
-  Widget footer(BuildContext context) {
-    if (id == -1) {
-      return Column(
-        children: [
-          const Spacer(
-            flex: 1,
-          ),
+          Spacer(),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
@@ -122,70 +76,52 @@ class classement_page extends StatelessWidget {
             style: SecondaryButton(context),
             child: const Text('RETOUR'),
           ),
-          const Spacer(
-            flex: 1,
-          ),
-        ],
-      );
-    }
-    return Column(
-      children: [
-        const Divider(
-          color: Colors.white,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Container(
-          height: 30,
+        ], false),
+      ),
+    );
+  }
+
+  Widget ScoreRow(
+      BuildContext context, int index, ScoreBoardEntry score, bool isActual) {
+    return Column(children: [
+      Container(
+          height: 54,
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 200, 9, 222).withOpacity(0.4),
+            color: isActual
+                ? Color(0xFFF19BFF).withOpacity(0.35)
+                : Colors.white.withOpacity(0.35),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(children: [
-            SizedBox(
-              width: 16,
-            ),
             Expanded(
                 flex: 2,
                 child: Text(
-                  "id.", //ICI
-                  style: const TextStyle(fontSize: 16.0, color: Colors.white),
+                  (index).toString() + ".", //ICI
+                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
             Expanded(
                 flex: 5,
                 child: Text(
-                  "Mathéo", //ICI
-                  style: const TextStyle(fontSize: 16.0, color: Colors.white),
+                  score.name, //ICI
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                      fontWeight:
+                          isActual ? FontWeight.bold : FontWeight.normal),
                   textAlign: TextAlign.center,
                 )),
             Expanded(
                 flex: 3,
                 child: Text(
-                  "59:30", //ICI
-                  style: const TextStyle(fontSize: 16.0, color: Colors.white),
+                  score.score.toString(), //ICI
+                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
-            SizedBox(
-              width: 16,
-            ),
-          ]),
-        ),
-        const Spacer(
-          flex: 1,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: SecondaryButton(context),
-          child: const Text('RETOUR'),
-        ),
-        const Spacer(
-          flex: 1,
-        ),
-      ],
-    );
+          ])),
+      const SizedBox(
+        height: 6,
+      ),
+    ]);
   }
 }
