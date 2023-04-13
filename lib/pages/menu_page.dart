@@ -45,7 +45,17 @@ class _MenuPageState extends State<MenuPage> {
     isPlaying.value = true;
   }
 
-  void playButtonSound() {
+  void playButtonSound() async {
+    // Get the stored sound value and soundIsActivated state using MusicPreferences
+    double soundValue = await MusicPreferences.getSoundValue();
+    bool soundIsActivated = await MusicPreferences.getSoundIsActivated();
+
+    if (soundIsActivated) {
+      buttonPlayer.setVolume(soundValue / 100);
+    } else {
+      buttonPlayer.setVolume(0);
+    }
+
     buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
       buttonPlayer.play();
     });

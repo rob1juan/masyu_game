@@ -5,6 +5,7 @@ import 'package:masyu_game/pages/settings_page.dart';
 
 import 'package:just_audio/just_audio.dart';
 import 'package:masyu_game/widgets/background_audio.dart';
+import 'package:masyu_game/pages/music_preferences.dart';
 
 class AboutPage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
@@ -37,7 +38,17 @@ class _AboutPageState extends State<AboutPage> {
     isPlaying.value = true;
   }
 
-  void playButtonSound() {
+  void playButtonSound() async {
+    // Get the stored sound value and soundIsActivated state using MusicPreferences
+    double soundValue = await MusicPreferences.getSoundValue();
+    bool soundIsActivated = await MusicPreferences.getSoundIsActivated();
+
+    if (soundIsActivated) {
+      buttonPlayer.setVolume(soundValue / 100);
+    } else {
+      buttonPlayer.setVolume(0);
+    }
+
     buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
       buttonPlayer.play();
     });
