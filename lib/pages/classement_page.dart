@@ -14,25 +14,24 @@ class classement_page extends StatelessWidget {
   List<String> players = [
     "p1",
     "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2",
-    "p2"
+    "p3",
+    "p4",
+    "p5",
+    "p6",
+    "p7",
+    "p8",
+    "p9",
+    "p10",
+    "p11",
+    "p12",
+    "p13",
+    "p14",
+    "p15",
+    "p16",
+    "p17",
+    "p18",
+    "p19",
+    "p20",
   ];
 
   @override
@@ -41,19 +40,18 @@ class classement_page extends StatelessWidget {
       body: Stack(
         children: BuildBasicLayout([
           SizedBox(
-            height: 15,
+            height: MediaQuery.of(context).size.height * 0.07,
           ),
           const Text(
             "CLASSEMENT",
             style: TextStyle(
-                fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600),
+                fontSize: 23, color: Colors.white, fontWeight: FontWeight.w600),
           ),
           SizedBox(
-            height: 20,
+            height: MediaQuery.of(context).size.height * 0.05,
           ),
           Container(
-            // height: 200,
-            height: MediaQuery.of(context).size.height - 420,
+            height: 200,
             width: MediaQuery.of(context).size.width * 0.8,
             child: ScrollConfiguration(
                 behavior:
@@ -61,56 +59,47 @@ class classement_page extends StatelessWidget {
                 child: ListView.builder(
                     itemCount:
                         players.length, // nombre d'éléments dans la liste
-                    itemBuilder: (context, index) => Stack(children: [
-                          const SizedBox(
-                            height: 40,
-                          ),
+                    itemBuilder: (context, index) => Column(children: [
                           Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ListTile(
-                                title: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                  Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        players[index],
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      )),
-                                  Expanded(
-                                      flex: 5,
-                                      child: Text(
-                                        "Mathéo",
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      )),
-                                  Expanded(
-                                      flex: 3,
-                                      child: Text(
-                                        "59:30",
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      )),
-                                ])),
-                          ),
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(children: [
+                                Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      players[index], //ICI
+                                      style: const TextStyle(
+                                          fontSize: 16.0, color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    )),
+                                Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                      "Mathéo", //ICI
+                                      style: const TextStyle(
+                                          fontSize: 16.0, color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    )),
+                                Expanded(
+                                    flex: 3,
+                                    child: Text(
+                                      "59:30", //ICI
+                                      style: const TextStyle(
+                                          fontSize: 16.0, color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    )),
+                              ])),
                           const SizedBox(
-                            height: 40,
+                            height: 10,
                           ),
                         ]))),
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height - 560,
             child: footer(context),
           )
         ], false),
@@ -138,8 +127,11 @@ class classement_page extends StatelessWidget {
     }
     return Column(
       children: [
-        Divider(
+        const Divider(
           color: Colors.white,
+        ),
+        const SizedBox(
+          height: 10,
         ),
         Container(
           height: 30,
@@ -148,38 +140,30 @@ class classement_page extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(children: [
-            SizedBox(
-              width: 16,
-            ),
             Expanded(
                 flex: 2,
                 child: Text(
-                  "id.",
-                  style: const TextStyle(fontSize: 14.0, color: Colors.white),
+                  "id.", //ICI
+                  style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
             Expanded(
                 flex: 5,
                 child: Text(
-                  "Mathéo",
-                  style: const TextStyle(fontSize: 14.0, color: Colors.white),
+                  "Mathéo", //ICI
+                  style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
             Expanded(
                 flex: 3,
                 child: Text(
-                  "59:30",
-                  style: const TextStyle(fontSize: 14.0, color: Colors.white),
+                  "59:30", //ICI
+                  style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
-            SizedBox(
-              width: 16,
-            ),
           ]),
         ),
-        SizedBox(
-          height: 10,
-        ),
+        const Expanded(flex: 1, child: SizedBox()),
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
@@ -187,72 +171,8 @@ class classement_page extends StatelessWidget {
           child: const Text('RETOUR'),
           style: SecondaryButton(context),
         ),
+        const Expanded(flex: 1, child: SizedBox()),
       ],
     );
   }
-
-  //1ere version
-  /** 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: MyHeaderDelegate(),
-            ),
-          ];
-        },
-        body: CustomScrollView(
-          slivers: [
-            SliverFixedExtentList(
-              itemExtent: 30,
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => ListTile(
-                  title: Text(
-                    players[index],
-                    style: const TextStyle(fontSize: 20.0),
-                  ),
-                ),
-                childCount: players.length,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }*/
 }
-
-// class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
-//   @override
-//   Widget build(
-//       BuildContext context, double shrinkOffset, bool overlapsContent) {
-//     return Container(
-//       color: Colors.blue,
-//       child: Column(
-//         children: [
-//           Expanded(
-//             child: Image.asset(
-//               'assets/logo.png',
-//               fit: BoxFit.cover,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   @override
-//   double get maxExtent => 200.0;
-
-//   @override
-//   double get minExtent => 200.0;
-
-//   @override
-//   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-//     return true;
-//   }
-// }
