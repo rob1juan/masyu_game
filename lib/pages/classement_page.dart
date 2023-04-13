@@ -42,18 +42,16 @@ class classement_page extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.07,
           ),
-          const Expanded(
-            flex: 1,
-            child: Text(
-              "CLASSEMENT",
-              style: TextStyle(
-                  fontSize: 23,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600),
-            ),
+          const Text(
+            "CLASSEMENT",
+            style: TextStyle(
+                fontSize: 23, color: Colors.white, fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.03,
           ),
           Container(
-            height: 200,
+            height: 227,
             width: MediaQuery.of(context).size.width * 0.8,
             child: ScrollConfiguration(
               behavior:
@@ -100,7 +98,7 @@ class classement_page extends StatelessWidget {
             ),
           ),
           Expanded(
-              flex: 3,
+              flex: 9,
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: footer(context),
