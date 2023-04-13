@@ -84,8 +84,10 @@ class Plateau {
 
   bool CanbeFilled(Case currentCase) {
     List<Line> adjacentLines = findAdjacentLines(currentCase.position);
-
-    if (adjacentLines.isEmpty || adjacentLines.length == 1) {
+    if (adjacentLines.isEmpty) {
+      return true;
+    }
+    if (adjacentLines.length == 1) {
       return false;
     }
     Line line1 = adjacentLines[0];
@@ -122,7 +124,10 @@ class Plateau {
   bool CanbeCircle(Case currentCase) {
     List<Line> adjacentLines = findAdjacentLines(currentCase.position);
 
-    if (adjacentLines.isEmpty || adjacentLines.length == 1) {
+    if (adjacentLines.isEmpty) {
+      return true;
+    }
+    if (adjacentLines.length == 1) {
       return false;
     }
     Line line1 = adjacentLines[0];
@@ -198,7 +203,7 @@ class Plateau {
     Line firstLine;
     List<Vector2> visitedCoordinates = [];
 
-    if (remainingLines.isEmpty) {
+    if (remainingLines.isEmpty || remainingLines.length < 2) {
       return false;
     }
 
@@ -206,6 +211,12 @@ class Plateau {
     visitedCoordinates.add(currentLine.start);
 
     while (remainingLines.isNotEmpty) {
+      if (findAdjacentLinesInList(currentLine.start, remainingLines).length >
+              1 ||
+          findAdjacentLinesInList(currentLine.end, remainingLines).length > 1) {
+        return false;
+      }
+
       Line? adjacentLine = remainingLines.firstWhereOrNull((line) =>
           (line.start == currentLine.end || line.end == currentLine.end) ||
           (line.start == currentLine.start || line.end == currentLine.start));
@@ -215,11 +226,9 @@ class Plateau {
       }
 
       if (visitedCoordinates.contains(adjacentLine.start) &&
-          (visitedCoordinates.last != adjacentLine.start)) {
-        if (visitedCoordinates.contains(adjacentLine.end) &&
-            (visitedCoordinates.last != adjacentLine.end)) {
-          return false;
-        }
+          ((visitedCoordinates.last != adjacentLine.start) &&
+              (visitedCoordinates.first != adjacentLine.start))) {
+        return false;
       }
 
       remainingLines.remove(adjacentLine);

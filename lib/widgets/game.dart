@@ -226,7 +226,7 @@ class LinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = isValid ? Colors.white : Colors.red
+      ..color = Colors.white
       ..strokeWidth = 6
       ..strokeCap = StrokeCap.round;
 
