@@ -148,6 +148,16 @@ class _MusicPageState extends State<MusicPage> {
                     ? Colors.white
                     : _activeTrackColorDisabled;
               });
+
+              final player = BackgroundAudio.of(context).backgroundPlayer;
+
+              // Set the background music volume according to the button state
+              if (_isActivatedMusic[0]) {
+                player.setVolume(_currentMusicValue / 100);
+              } else {
+                player.setVolume(0);
+              }
+
               await prefs.setBool('musicIsActivated', _isActivatedMusic[index]);
             },
             children: <Widget>[
@@ -194,6 +204,10 @@ class _MusicPageState extends State<MusicPage> {
               } else {
                 await prefs.setBool('musicIsActivated', true);
               }
+
+              // Set the background music volume according to the slider value
+              final player = BackgroundAudio.of(context).backgroundPlayer;
+              player.setVolume(value / 100);
             },
           ),
         ),

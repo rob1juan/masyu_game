@@ -7,6 +7,8 @@ import 'package:masyu_game/Theme/Layout.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:masyu_game/widgets/background_audio.dart';
 
+import 'package:masyu_game/pages/music_preferences.dart';
+
 class MenuPage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
 
@@ -28,6 +30,17 @@ class _MenuPageState extends State<MenuPage> {
 
     await player.setAsset('assets/music/menu.mp3');
     player.setLoopMode(LoopMode.one);
+
+    // Get the stored music value and musicIsActivated state using MusicPreferences and set the volume
+    double musicValue = await MusicPreferences.getMusicValue();
+    bool musicIsActivated = await MusicPreferences.getMusicIsActivated();
+
+    if (musicIsActivated) {
+      player.setVolume(musicValue / 100);
+    } else {
+      player.setVolume(0);
+    }
+
     player.play();
     isPlaying.value = true;
   }
