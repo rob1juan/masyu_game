@@ -5,11 +5,86 @@ import 'package:masyu_game/Theme/Layout.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:clipboard/clipboard.dart';
 
-class FinishPage extends StatelessWidget {
-  final TextEditingController _textController = TextEditingController();
+import 'package:just_audio/just_audio.dart';
+import 'package:masyu_game/widgets/background_audio.dart';
+import 'package:masyu_game/pages/music_preferences.dart';
+
+class FinishPage extends StatefulWidget {
+  final ValueNotifier<bool> isPlaying;
   final Duration elapsedTime;
 
-  FinishPage({required this.elapsedTime});
+  FinishPage({required this.isPlaying, required this.elapsedTime});
+
+  @override
+  _FinishPageState createState() => _FinishPageState();
+}
+
+class _FinishPageState extends State<FinishPage> {
+  final TextEditingController _textController = TextEditingController();
+
+  final backgroundPlayer = AudioPlayer();
+  final buttonPlayer = AudioPlayer();
+  final finishPlayer = AudioPlayer();
+
+  void startBackgroundMusic(AudioPlayer player) async {
+    player.setLoopMode(LoopMode.one);
+    player.play();
+  }
+
+  void playButtonSound() async {
+    // Get the stored sound value and soundIsActivated state using MusicPreferences
+    double soundValue = await MusicPreferences.getSoundValue();
+    bool soundIsActivated = await MusicPreferences.getSoundIsActivated();
+
+    if (soundIsActivated) {
+      buttonPlayer.setVolume(soundValue / 100);
+    } else {
+      buttonPlayer.setVolume(0);
+    }
+
+    buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
+      buttonPlayer.play();
+    });
+  }
+
+  Future<void> finishBackgroundMusic() async {
+    await finishPlayer.setAsset('assets/music/finish.mp3');
+    double musicValue = await MusicPreferences.getMusicValue();
+    bool musicIsActivated = await MusicPreferences.getMusicIsActivated();
+
+    if (musicIsActivated) {
+      finishPlayer.setVolume(musicValue / 100);
+    } else {
+      finishPlayer.setVolume(0);
+    }
+    await finishPlayer.play();
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    final isPlaying = BackgroundAudio.of(context).isPlaying;
+
+    if (isPlaying.value) return;
+
+    await player.setAsset('assets/music/menu.mp3');
+    finishPlayer.processingStateStream.listen((event) {
+      if (event == ProcessingState.completed) {
+        startBackgroundMusic(player);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    backgroundPlayer.dispose();
+    buttonPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await finishBackgroundMusic();
+    });
+  }
 
   void _shareScore(BuildContext context) {
     String playerName = _textController.text;
@@ -28,7 +103,7 @@ class FinishPage extends StatelessWidget {
           "Salut ! Voici le nouveau score que je viens de faire sur Masyu :\n"
           "Difficulté : Moyen\n"
           "Niveau : 1\n"
-          "Temps : ${elapsedTime.inMinutes.toString().padLeft(2, '0')}:${(elapsedTime.inSeconds % 60).toString().padLeft(2, '0')}\n"
+          "Temps : ${widget.elapsedTime.inMinutes.toString().padLeft(2, '0')}:${(widget.elapsedTime.inSeconds % 60).toString().padLeft(2, '0')}\n"
           "Joueur : $playerName\n"
           "Essaye de me battre ! ;))";
       FlutterClipboard.copy(message).then((value) => Fluttertoast.showToast(
@@ -82,7 +157,7 @@ class FinishPage extends StatelessWidget {
                         fontSize: 60)),
                 const SizedBox(height: 30),
                 Text(
-                  "${elapsedTime.inMinutes.toString().padLeft(2, '0')}:${(elapsedTime.inSeconds % 60).toString().padLeft(2, '0')}",
+                  "${widget.elapsedTime.inMinutes.toString().padLeft(2, '0')}:${(widget.elapsedTime.inSeconds % 60).toString().padLeft(2, '0')}",
                   style: TextStyle(
                     color: Color.fromRGBO(255, 255, 255, 1),
                     fontWeight: FontWeight.w700,
@@ -126,10 +201,12 @@ class FinishPage extends StatelessWidget {
                 SizedBox(height: screenHeight * 0.1),
                 ElevatedButton(
                   onPressed: () {
+                    playButtonSound();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => LevelSelectionPage()),
+                          builder: (context) =>
+                              LevelSelectionPage(isPlaying: widget.isPlaying)),
                     );
                   },
                   child: const Text('VALIDER'),

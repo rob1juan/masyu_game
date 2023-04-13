@@ -52,6 +52,8 @@ dependencies:
 
   carousel_slider: ^4.0.0
 
+  just_audio: ^0.9.7
+
 dev_dependencies:
   flutter_launcher_icons: "^0.13.0"
 

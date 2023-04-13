@@ -3,35 +3,59 @@ import 'package:masyu_game/pages/difficulty_selection_page.dart';
 import 'package:masyu_game/pages/settings_page.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
+
 import 'package:just_audio/just_audio.dart';
-import 'dart:async';
+import 'package:masyu_game/widgets/background_audio.dart';
+
+import 'package:masyu_game/pages/music_preferences.dart';
 
 class MenuPage extends StatefulWidget {
+  final ValueNotifier<bool> isPlaying;
+
+  MenuPage({required this.isPlaying});
+
   @override
   _MenuPageState createState() => _MenuPageState();
 }
 
 class _MenuPageState extends State<MenuPage> {
-  bool isPlaying = false;
-
   final backgroundPlayer = AudioPlayer();
   final buttonPlayer = AudioPlayer();
 
-  @override
-  void initState() {
-    super.initState();
-    initBackgroundAudio();
-  }
+  void startBackgroundMusic(BuildContext context) async {
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    final isPlaying = BackgroundAudio.of(context).isPlaying;
 
-  Future<void> initBackgroundAudio() async {
-    if (!isPlaying) {
-      await backgroundPlayer.setAsset('assets/music/menu.mp3');
-      backgroundPlayer.setLoopMode(LoopMode.one);
-      backgroundPlayer.play();
+    if (isPlaying.value) return;
+
+    await player.setAsset('assets/music/menu.mp3');
+    player.setLoopMode(LoopMode.one);
+
+    // Get the stored music value and musicIsActivated state using MusicPreferences and set the volume
+    double musicValue = await MusicPreferences.getMusicValue();
+    bool musicIsActivated = await MusicPreferences.getMusicIsActivated();
+
+    if (musicIsActivated) {
+      player.setVolume(musicValue / 100);
+    } else {
+      player.setVolume(0);
     }
+
+    player.play();
+    isPlaying.value = true;
   }
 
-  void playButtonSound() {
+  void playButtonSound() async {
+    // Get the stored sound value and soundIsActivated state using MusicPreferences
+    double soundValue = await MusicPreferences.getSoundValue();
+    bool soundIsActivated = await MusicPreferences.getSoundIsActivated();
+
+    if (soundIsActivated) {
+      buttonPlayer.setVolume(soundValue / 100);
+    } else {
+      buttonPlayer.setVolume(0);
+    }
+
     buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
       buttonPlayer.play();
     });
@@ -42,6 +66,14 @@ class _MenuPageState extends State<MenuPage> {
     backgroundPlayer.dispose();
     buttonPlayer.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      startBackgroundMusic(context);
+    });
   }
 
   @override
@@ -62,7 +94,8 @@ class _MenuPageState extends State<MenuPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DifficultySelectionPage()),
+                    builder: (context) =>
+                        DifficultySelectionPage(isPlaying: widget.isPlaying)),
               );
             },
             child: Text('JOUER'),
@@ -74,7 +107,9 @@ class _MenuPageState extends State<MenuPage> {
               playButtonSound();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsPage()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SettingsPage(isPlaying: widget.isPlaying)),
               );
             },
             child: Text('OPTIONS'),

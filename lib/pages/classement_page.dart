@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:masyu_game/pages/difficulty_selection_page.dart';
+import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/models/score_board_entry_model.dart';
 
-class classement_page extends StatelessWidget {
+import 'package:just_audio/just_audio.dart';
+import 'package:masyu_game/widgets/background_audio.dart';
+import 'package:masyu_game/pages/music_preferences.dart';
+
+class ClassementPage extends StatefulWidget {
+  final ValueNotifier<bool> isPlaying;
+  final Duration elapsedTime;
+  final int level;
+
+  ClassementPage(
+      {required this.isPlaying,
+      required this.elapsedTime,
+      required this.level});
+
+  @override
+  _classement_pageState createState() => _classement_pageState();
+}
+
+class _classement_pageState extends State<ClassementPage> {
   int level = 0;
   int? id;
   classement_page(int lvl, {int? id}) {
@@ -25,6 +43,52 @@ class classement_page extends StatelessWidget {
     ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
     ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1)
   ];
+
+  final backgroundPlayer = AudioPlayer();
+  final buttonPlayer = AudioPlayer();
+
+  void startBackgroundMusic(BuildContext context) async {
+    final player = BackgroundAudio.of(context).backgroundPlayer;
+    final isPlaying = BackgroundAudio.of(context).isPlaying;
+
+    if (isPlaying.value) return;
+
+    await player.setAsset('assets/music/menu.mp3');
+    player.setLoopMode(LoopMode.one);
+    player.play();
+    isPlaying.value = true;
+  }
+
+  void playButtonSound() async {
+    // Get the stored sound value and soundIsActivated state using MusicPreferences
+    double soundValue = await MusicPreferences.getSoundValue();
+    bool soundIsActivated = await MusicPreferences.getSoundIsActivated();
+
+    if (soundIsActivated) {
+      buttonPlayer.setVolume(soundValue / 100);
+    } else {
+      buttonPlayer.setVolume(0);
+    }
+
+    buttonPlayer.setAsset('assets/music/pop.mp3').then((_) {
+      buttonPlayer.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    backgroundPlayer.dispose();
+    buttonPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      startBackgroundMusic(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +135,13 @@ class classement_page extends StatelessWidget {
           Spacer(),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              playButtonSound();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        LevelSelectionPage(isPlaying: widget.isPlaying)),
+              );
             },
             style: SecondaryButton(context),
             child: const Text('RETOUR'),
