@@ -6,40 +6,44 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common/sqlite_api.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../models/score_board_entry_model.dart';
 
 Future<List<ScoreBoardEntry>> getScores(int level) async {
-  final db = await openDatabase(
-    join(await getDatabasesPath(), 'score_board.db'),
-  );
+  var databaseFactory = databaseFactoryFfi;
+  final dbPath = '/data/user/0/com.example.masyu_game/app_flutter/score_board.db';
 
-  final List<Map<String, dynamic>> maps = await db.query(
-    'score',
-    where: 'level = ?',
-    whereArgs: [level],
-    orderBy: 'score'
-  );
+  final db = await databaseFactory.openDatabase(dbPath);
 
+  final List<Map<String, dynamic>> maps = await db.query('score',
+      where: 'level = ?', whereArgs: [level], orderBy: 'score');
+
+  await db.close();
   return List.generate(maps.length, (i) {
     return ScoreBoardEntry(
-      name: maps[i]['name'],
-      score: maps[i]['score'],
-      level: maps[i]['level']
-    );
+        name: maps[i]['name'],
+        score: maps[i]['score'],
+        level: maps[i]['level']);
   });
 }
 
 Future<int> saveScore(ScoreBoardEntry score) async {
-  final db = await openDatabase(
-    join(await getDatabasesPath(), 'score_board.db'),
-  );
+  sqfliteFfiInit();
 
+  var databaseFactory = databaseFactoryFfi;
+
+  final dbPath = '/data/user/0/com.example.masyu_game/app_flutter/score_board.db';
+
+  final db = await databaseFactory.openDatabase(dbPath);
   int id = await db.insert(
     'score',
     score.toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
+
+  await db.close();
+
   return id;
 }
