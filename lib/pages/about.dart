@@ -41,7 +41,7 @@ class AboutPage extends StatelessWidget {
                 Container(
                   width: screenWidth * 0.7,
                   child: const Text(
-                      'Bienvenue dans le monde merveilleux d\'ARMM, le studio de jeu qui vous rendra accro en un clin d\'œil (mais n\'ayez pas peur, c\'est un accro sain et amusant).\n\nNotre petite équipe de joyeux lurons est composée d\'Aurélien, Mathéo, Maxime et Robin, tous armés d\'une passion débordante pour les jeux sur smartphone. Et notre dernier bébé, c\'est un jeu de Masyu qui va vous faire tourner la tête (mais dans le bon sens du terme, promis). \n\nAlors, si vous êtes prêt à rejoindre la bande d\'ARMM et à vous amuser comme jamais, téléchargez notre jeu de Masyu et préparez-vous à passer des heures (voire des jours, voire des semaines) à jouer !',
+                      'Bienvenue dans le monde merveilleux d\'ARMM !\n\nNotre petite équipe de joyeux lurons est composée d\'Aurélien, Mathéo, Maxime et Robin, tous armés d\'une passion débordante pour les jeux sur smartphone. Et notre dernier bébé, c\'est un jeu de Masyu qui va vous faire tourner la tête (mais dans le bon sens du terme, promis). \n\nAlors, si vous êtes prêt à rejoindre la bande d\'ARMM et à vous amuser comme jamais, téléchargez notre jeu de Masyu et préparez-vous à passer des heures (voire des jours, voire des semaines) à jouer !',
                       style: TextStyle(
                           color: Color.fromRGBO(255, 255, 255, 1),
                           fontWeight: FontWeight.w700,
