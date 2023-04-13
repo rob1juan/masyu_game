@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/pages/game_page.dart';
+import 'package:masyu_game/pages/difficulty_selection_page.dart';
+import 'package:masyu_game/widgets/game.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
+import 'package:masyu_game/pages/classement_page.dart';
 
 class LevelSelectionPage extends StatelessWidget {
   @override
@@ -16,9 +20,6 @@ class LevelSelectionPage extends StatelessWidget {
 
     double buttonWidth = screenWidth * 0.3;
     double buttonHeight = screenHeight * 0.075;
-
-    double imageWidth = screenWidth * 0.13;
-    double imageHeight = imageWidth;
 
     return Scaffold(
       body: Stack(
@@ -39,7 +40,12 @@ class LevelSelectionPage extends StatelessWidget {
                 children: [
                   SizedBox(height: topSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GamePage()),
+                      );
+                    },
                     child: Text('NIVEAU 1'),
                     style: PrimaryButton(context),
                   ),
@@ -68,11 +74,14 @@ class LevelSelectionPage extends StatelessWidget {
                 children: [
                   SizedBox(height: topSpacing),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => classement_page(99)));
+                    },
                     child: Image.asset(
                       'assets/poduim.png',
-                      width: imageWidth,
-                      height: imageHeight,
                       fit: BoxFit.cover,
                     ),
                     style: ClassementButton(context).copyWith(
@@ -85,8 +94,6 @@ class LevelSelectionPage extends StatelessWidget {
                     onPressed: () {},
                     child: Image.asset(
                       'assets/poduim.png',
-                      width: imageWidth,
-                      height: imageHeight,
                       fit: BoxFit.cover,
                     ),
                     style: ClassementButton(context).copyWith(
@@ -99,8 +106,6 @@ class LevelSelectionPage extends StatelessWidget {
                     onPressed: () {},
                     child: Image.asset(
                       'assets/poduim.png',
-                      width: imageWidth,
-                      height: imageHeight,
                       fit: BoxFit.cover,
                     ),
                     style: ClassementButton(context).copyWith(
@@ -113,8 +118,6 @@ class LevelSelectionPage extends StatelessWidget {
                     onPressed: () {},
                     child: Image.asset(
                       'assets/poduim.png',
-                      width: imageWidth,
-                      height: imageHeight,
                       fit: BoxFit.cover,
                     ),
                     style: ClassementButton(context).copyWith(
@@ -130,7 +133,11 @@ class LevelSelectionPage extends StatelessWidget {
           Spacer(),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DifficultySelectionPage()),
+              );
             },
             child: Text('RETOUR'),
             style: SecondaryButton(context),

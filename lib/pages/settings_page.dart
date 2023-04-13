@@ -36,7 +36,12 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           SizedBox(height: verticalSpacing * 2),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MusicPage()),
+              );
+            },
             child: Text('MUSIQUE'),
             style: YellowButton(context),
           ),
