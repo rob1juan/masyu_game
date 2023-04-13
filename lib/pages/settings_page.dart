@@ -6,9 +6,12 @@ import 'package:masyu_game/pages/about.dart';
 import 'package:masyu_game/pages/rules.dart';
 import 'package:masyu_game/pages/menu_page.dart';
 
-import 'package:masyu_game/pages/music_page.dart';
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
 
-class SettingsPage extends StatelessWidget {
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     // Récupérer la taille de l'écran

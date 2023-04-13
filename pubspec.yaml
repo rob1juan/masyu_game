@@ -52,7 +52,6 @@ dependencies:
 
   carousel_slider: ^4.0.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -89,6 +88,7 @@ flutter:
     - assets/music/menu.mp3
     - assets/music/game.mp3
     - assets/music/finish.mp3
+    - assets/music/pop.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
