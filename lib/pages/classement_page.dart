@@ -143,6 +143,9 @@ class classement_page extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(children: [
+            SizedBox(
+              width: 16,
+            ),
             Expanded(
                 flex: 2,
                 child: Text(
@@ -164,6 +167,9 @@ class classement_page extends StatelessWidget {
                   style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),
+            SizedBox(
+              width: 16,
+            ),
           ]),
         ),
         const Spacer(
