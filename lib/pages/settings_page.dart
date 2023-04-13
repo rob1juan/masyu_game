@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:masyu_game/pages/about.dart';
 import 'package:masyu_game/pages/rules.dart';
 import 'package:masyu_game/pages/menu_page.dart';
+
+import 'package:masyu_game/pages/music_page.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -22,7 +25,12 @@ class SettingsPage extends StatelessWidget {
         children: BuildBasicLayout([
           SizedBox(height: topSpacing * 2),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MusicPage()),
+              );
+            },
             child: Text('MUSIQUE'),
             style: YellowButton(context),
           ),
