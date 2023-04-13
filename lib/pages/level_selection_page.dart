@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/pages/finish_page.dart';
 import 'package:masyu_game/pages/game_page.dart';
 import 'package:masyu_game/pages/difficulty_selection_page.dart';
 import 'package:masyu_game/widgets/game.dart';
@@ -13,8 +14,9 @@ import 'package:masyu_game/pages/music_preferences.dart';
 
 class LevelSelectionPage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
+  int difficulty = 1;
 
-  LevelSelectionPage({required this.isPlaying});
+  LevelSelectionPage({required this.isPlaying, required this.difficulty});
 
   @override
   _LevelSelectionPageState createState() => _LevelSelectionPageState();
@@ -72,6 +74,14 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+    String title = "";
+    if (widget.difficulty == 1) {
+      title = "FACILE";
+    } else if (widget.difficulty == 2) {
+      title = "MOYEN";
+    } else {
+      title = "DIFFICILE";
+    }
     // Définir des tailles responsives pour les espacements
     double verticalSpacing = screenHeight * 0.01;
     double horizontalSpacing = screenWidth * 0.025;
@@ -85,7 +95,7 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
         children: BuildBasicLayout([
           SizedBox(height: topSpacing * 1.5),
           Text(
-            'CHOIX DU NIVEAU',
+            title,
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,

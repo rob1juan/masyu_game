@@ -4,16 +4,22 @@ import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:clipboard/clipboard.dart';
-
+import 'package:masyu_game/core/score_board_utils.dart';
+import 'package:masyu_game/models/score_board_entry_model.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:masyu_game/widgets/background_audio.dart';
 import 'package:masyu_game/pages/music_preferences.dart';
+import 'package:masyu_game/pages/classement_page.dart';
 
 class FinishPage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
   final Duration elapsedTime;
+  int level;
 
-  FinishPage({required this.isPlaying, required this.elapsedTime});
+  FinishPage(
+      {required this.isPlaying,
+      required this.elapsedTime,
+      required this.level});
 
   @override
   _FinishPageState createState() => _FinishPageState();
@@ -114,6 +120,32 @@ class _FinishPageState extends State<FinishPage> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0));
+    }
+  }
+
+  Future<void> displayScoreBoard(BuildContext context) async {
+    String playerName = _textController.text;
+
+    if (playerName.isEmpty) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ClassementPage(
+                  isPlaying: widget.isPlaying,
+                  elapsedTime: widget.elapsedTime,
+                  level: widget.level)));
+    } else {
+      double score = widget.elapsedTime.inMinutes.toDouble() +
+          (widget.elapsedTime.inSeconds.toDouble() % 60) / 60;
+      int id = await saveScore(
+          ScoreBoardEntry(name: playerName, score: score, level: widget.level));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ClassementPage(
+                  isPlaying: widget.isPlaying,
+                  elapsedTime: widget.elapsedTime,
+                  level: widget.level)));
     }
   }
 

@@ -92,8 +92,10 @@ class _DifficultySelectionPageState extends State<DifficultySelectionPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        LevelSelectionPage(isPlaying: widget.isPlaying)),
+                    builder: (context) => LevelSelectionPage(
+                          isPlaying: widget.isPlaying,
+                          difficulty: 1,
+                        )),
               );
             },
             child: Text('FACILE'),
@@ -106,8 +108,10 @@ class _DifficultySelectionPageState extends State<DifficultySelectionPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        LevelSelectionPage(isPlaying: widget.isPlaying)),
+                    builder: (context) => LevelSelectionPage(
+                          isPlaying: widget.isPlaying,
+                          difficulty: 2,
+                        )),
               );
             },
             child: Text('MOYEN'),
@@ -120,8 +124,10 @@ class _DifficultySelectionPageState extends State<DifficultySelectionPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        LevelSelectionPage(isPlaying: widget.isPlaying)),
+                    builder: (context) => LevelSelectionPage(
+                          isPlaying: widget.isPlaying,
+                          difficulty: 3,
+                        )),
               );
             },
             child: Text('DIFFICILE'),

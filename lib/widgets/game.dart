@@ -26,7 +26,7 @@ class _GameBoardState extends State<GameBoard> {
   }
 
   Future<void> loadPlateau() async {
-    final plateau = await Plateau.loadFromJson(1, 1);
+    final plateau = await Plateau.loadFromJson(4, 2);
     setState(() {
       this.plateau = plateau;
       this.taille = plateau!.taille;

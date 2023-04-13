@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/core/score_board_utils.dart';
 import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
@@ -28,21 +29,17 @@ class _classement_pageState extends State<ClassementPage> {
   classement_page(int lvl, {int? id}) {
     this.level = lvl;
     this.id = id ?? -1;
+    fetchData();
   }
 
-  List<ScoreBoardEntry> players = [
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1)
-  ];
+  List<ScoreBoardEntry> players = List.empty(growable: true);
+
+  Future<dynamic> fetchData() async {
+    final scores = await getScores(level);
+    setState(() {
+      players = scores;
+    });
+  }
 
   final backgroundPlayer = AudioPlayer();
   final buttonPlayer = AudioPlayer();
@@ -140,7 +137,7 @@ class _classement_pageState extends State<ClassementPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        LevelSelectionPage(isPlaying: widget.isPlaying)),
+                        LevelSelectionPage(isPlaying: widget.isPlaying, )),
               );
             },
             style: SecondaryButton(context),
