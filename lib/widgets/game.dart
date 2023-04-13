@@ -130,6 +130,7 @@ class _GameBoardState extends State<GameBoard> {
                         isValid: plateau.validPath),
                   ),
                   GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
                     itemCount: taille * taille,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
