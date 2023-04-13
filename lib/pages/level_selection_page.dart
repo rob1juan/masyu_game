@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
-import 'package:masyu_game/pages/classement_page2.dart';
+import 'package:masyu_game/pages/classement_page.dart';
 
 class LevelSelectionPage extends StatelessWidget {
   @override
@@ -71,10 +71,9 @@ class LevelSelectionPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CassementPage()),
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => classement_page(99)));
                     },
                     child: Image.asset(
                       'assets/poduim.png',
