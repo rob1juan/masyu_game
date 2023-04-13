@@ -3,27 +3,21 @@ import 'package:masyu_game/pages/menu_page.dart';
 import 'package:masyu_game/Theme/Color.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'dart:async';
+import 'package:sqflite_common/sqlite_api.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
-  // final database = await openDatabase(
-  //   // Set the path to the database. Note: Using the `join` function from the
-  //   // `path` package is best practice to ensure the path is correctly
-  //   // constructed for each platform.
-  //   join(await getDatabasesPath(), 'score_board.db'),
-  //   onCreate: (db, version) {
-  //     // Run the CREATE TABLE statement on the database.
-  //     return db.execute(
-  //       'CREATE TABLE score(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, score REAL, level INTEGER)',
-  //     );
-  //   },
-  //   // Set the version. This executes the onCreate function and provides a
-  //   // path to perform database upgrades and downgrades.
-  //   version: 1,
-  // );
+  // init the db
+  sqfliteFfiInit();
+  final dbPath = '/data/user/0/com.example.masyu_game/app_flutter/score_board.db';
+  var databaseFactory = databaseFactoryFfi;
+  final db = await databaseFactory.openDatabase(dbPath);
+  await db.execute('CREATE TABLE IF NOT EXISTS score(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, score REAL, level INTEGER)');
+  await db.close();
+
   runApp(MasyuApp());
 }
 
