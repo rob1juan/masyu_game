@@ -6,14 +6,19 @@ import 'package:masyu_game/models/line.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class GameBoard extends StatefulWidget {
+  late Plateau? plateau;
+  final int level;
+  final int difficulty;
+
+  GameBoard({required this.level, required this.difficulty});
+
   @override
   _GameBoardState createState() => _GameBoardState();
 }
 
 class _GameBoardState extends State<GameBoard> {
-  final int taille = 8;
+  int taille = 8;
   final GlobalKey _centerKey = GlobalKey();
-  late Plateau plateau;
 
   bool _isDragging = false;
   vector.Vector2? _dragStart;
@@ -21,7 +26,16 @@ class _GameBoardState extends State<GameBoard> {
   @override
   void initState() {
     super.initState();
-    plateau = Plateau(taille: taille);
+    widget.plateau = null;
+    loadPlateau();
+  }
+
+  Future<void> loadPlateau() async {
+    final plateau = await Plateau.loadFromJson(widget.level, widget.difficulty);
+    setState(() {
+      widget.plateau = plateau;
+      this.taille = plateau!.taille;
+    });
   }
 
   vector.Vector2? _touchPositionToGrid(Offset touchPosition, double gridSize) {
@@ -51,9 +65,11 @@ class _GameBoardState extends State<GameBoard> {
   }
 
   int _getLineIndex(vector.Vector2 start, vector.Vector2 end) {
-    for (int i = 0; i < plateau.lines.length; i++) {
-      if ((plateau.lines[i].start == start && plateau.lines[i].end == end) ||
-          (plateau.lines[i].start == end && plateau.lines[i].end == start)) {
+    for (int i = 0; i < widget.plateau!.lines.length; i++) {
+      if ((widget.plateau!.lines[i].start == start &&
+              widget.plateau!.lines[i].end == end) ||
+          (widget.plateau!.lines[i].start == end &&
+              widget.plateau!.lines[i].end == start)) {
         return i;
       }
     }
@@ -97,14 +113,14 @@ class _GameBoardState extends State<GameBoard> {
                 setState(() {
                   int lineIndex = _getLineIndex(_dragStart!, currentGridPos!);
                   if (lineIndex != -1) {
-                    plateau.lines.removeAt(lineIndex);
-                    plateau.CheckValidity();
+                    widget.plateau!.lines.removeAt(lineIndex);
+                    widget.plateau!.CheckValidity();
                   } else {
                     currentGridPos =
                         correctEndPoint(_dragStart!, currentGridPos!);
-                    plateau.lines
+                    widget.plateau!.lines
                         .add(Line(start: _dragStart!, end: currentGridPos!));
-                    plateau.CheckValidity();
+                    widget.plateau!.CheckValidity();
                   }
                   _dragStart = currentGridPos;
                 });
@@ -121,74 +137,82 @@ class _GameBoardState extends State<GameBoard> {
             child: SizedBox(
               height: gridSize * taille,
               child: Stack(
-                children: [
-                  CustomPaint(
-                    size: Size(constraints.maxWidth, constraints.maxWidth),
-                    painter: LinePainter(
-                        lines: plateau.lines,
-                        gridSize: gridSize,
-                        isValid: plateau.validPath),
-                  ),
-                  GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemCount: taille * taille,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: taille,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      int x = index % taille;
-                      int y = index ~/ taille;
-                      Case currentCase = plateau.grille[y][x];
-                      plateau.checkCaseValidity(currentCase);
-                      return GestureDetector(
-                        onTap: () {
-                          // Implémentez la logique pour gérer les actions de l'utilisateur ici
-                        },
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Container(
-                                width: 8, // ajustez la taille du point ici
-                                height: 8, // ajustez la taille du point ici
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white
-                                      .withOpacity(0.2), // réglez l'opacité ici
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: currentCase.type == CaseType.Filled
-                                  ? CircleAvatar(
-                                      backgroundColor: currentCase.isValide
-                                          ? Colors.white
-                                          : danger)
-                                  : currentCase.type == CaseType.Circle
-                                      ? Container(
-                                          width:
-                                              40, // ajustez la taille du cercle ici
-                                          height:
-                                              40, // ajustez la taille du cercle ici
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Color.fromARGB(
-                                                255, 186 - y * 2, 79, 226),
-                                            border: Border.all(
-                                                color: currentCase.isValide
-                                                    ? Colors.white
-                                                    : danger,
-                                                width: 3),
-                                          ),
-                                        )
-                                      : null,
-                            ),
-                          ],
+                children: widget.plateau != null
+                    ? [
+                        CustomPaint(
+                          size:
+                              Size(constraints.maxWidth, constraints.maxWidth),
+                          painter: LinePainter(
+                              lines: widget.plateau!.lines,
+                              gridSize: gridSize,
+                              isValid: widget.plateau!.validPath),
                         ),
-                      );
-                    },
-                  ),
-                ],
+                        GridView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: taille * taille,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: taille,
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            int x = index % taille;
+                            int y = index ~/ taille;
+                            Case currentCase = widget.plateau!.grille[y][x];
+                            widget.plateau!.checkCaseValidity(currentCase);
+                            return GestureDetector(
+                              onTap: () {
+                                // Implémentez la logique pour gérer les actions de l'utilisateur ici
+                              },
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      width:
+                                          8, // ajustez la taille du point ici
+                                      height:
+                                          8, // ajustez la taille du point ici
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white.withOpacity(
+                                            0.2), // réglez l'opacité ici
+                                      ),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: currentCase.type == CaseType.Filled
+                                        ? CircleAvatar(
+                                            backgroundColor:
+                                                currentCase.isValide
+                                                    ? Colors.white
+                                                    : danger)
+                                        : currentCase.type == CaseType.Circle
+                                            ? Container(
+                                                width:
+                                                    40, // ajustez la taille du cercle ici
+                                                height:
+                                                    40, // ajustez la taille du cercle ici
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Color.fromARGB(255,
+                                                      186 - y * 2, 79, 226),
+                                                  border: Border.all(
+                                                      color:
+                                                          currentCase.isValide
+                                                              ? Colors.white
+                                                              : danger,
+                                                      width: 3),
+                                                ),
+                                              )
+                                            : null,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ]
+                    : [SizedBox()],
               ),
             ),
           ),

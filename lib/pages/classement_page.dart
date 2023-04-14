@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masyu_game/core/score_board_utils.dart';
 import 'package:masyu_game/pages/level_selection_page.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:masyu_game/Theme/Buttons.dart';
@@ -10,39 +11,29 @@ import 'package:masyu_game/pages/music_preferences.dart';
 
 class ClassementPage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
-  final Duration elapsedTime;
   final int level;
+  final int difficulty;
+  final int id;
 
   ClassementPage(
       {required this.isPlaying,
-      required this.elapsedTime,
-      required this.level});
+      required this.level,
+      required this.difficulty,
+      required this.id});
 
   @override
   _classement_pageState createState() => _classement_pageState();
 }
 
 class _classement_pageState extends State<ClassementPage> {
-  int level = 0;
-  int? id;
-  classement_page(int lvl, {int? id}) {
-    this.level = lvl;
-    this.id = id ?? -1;
-  }
+  List<ScoreBoardEntry> players = List.empty(growable: true);
 
-  List<ScoreBoardEntry> players = [
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1),
-    ScoreBoardEntry(name: "Mathéo", score: 10.0, level: 1)
-  ];
+  Future<dynamic> fetchData() async {
+    final scores = await getScores(widget.level, widget.difficulty);
+    setState(() {
+      players = scores;
+    });
+  }
 
   final backgroundPlayer = AudioPlayer();
   final buttonPlayer = AudioPlayer();
@@ -88,6 +79,7 @@ class _classement_pageState extends State<ClassementPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startBackgroundMusic(context);
     });
+    fetchData();
   }
 
   @override
@@ -106,32 +98,46 @@ class _classement_pageState extends State<ClassementPage> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.03,
           ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                height: 60 * 5,
-                child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context)
-                      .copyWith(scrollbars: false),
-                  child: ListView.builder(
-                      itemCount:
-                          players.length - 1, // nombre d'éléments dans la liste
-                      itemBuilder: (context, index) =>
-                          ScoreRow(context, index, players[index], false)),
-                ),
-              ),
-              Divider(
-                color: Colors.white.withOpacity(0.35),
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-              ScoreRow(context, players.length - 1, players[players.length - 1],
-                  true),
-            ]),
-          ),
+          !players.isEmpty
+              ? Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        players.length - 1 > 0
+                            ? Container(
+                                height: 60 * 5,
+                                child: ScrollConfiguration(
+                                  behavior: ScrollConfiguration.of(context)
+                                      .copyWith(scrollbars: false),
+                                  child: ListView.builder(
+                                      itemCount: players.length -
+                                          (widget.id != -1
+                                              ? 1
+                                              : 0), // nombre d'éléments dans la liste
+                                      itemBuilder: (context, index) => ScoreRow(
+                                          context,
+                                          index + 1,
+                                          players[index],
+                                          false)),
+                                ),
+                              )
+                            : SizedBox(height: 60 * 5),
+                        widget.id != -1
+                            ? Divider(
+                                color: Colors.white.withOpacity(0.35),
+                              )
+                            : SizedBox(),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        widget.id != -1
+                            ? ScoreRow(context, players.length,
+                                players[players.length - 1], true)
+                            : SizedBox(),
+                      ]),
+                )
+              : SizedBox(),
           Spacer(),
           ElevatedButton(
             onPressed: () {
@@ -139,8 +145,10 @@ class _classement_pageState extends State<ClassementPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        LevelSelectionPage(isPlaying: widget.isPlaying)),
+                    builder: (context) => LevelSelectionPage(
+                          isPlaying: widget.isPlaying,
+                          difficulty: widget.difficulty,
+                        )),
               );
             },
             style: SecondaryButton(context),
@@ -153,6 +161,8 @@ class _classement_pageState extends State<ClassementPage> {
 
   Widget ScoreRow(
       BuildContext context, int index, ScoreBoardEntry score, bool isActual) {
+    int m = (score.score * 100 ~/ 60).floor();
+    int s = (score.score * 100 - m * 60).floor();
     return Column(children: [
       Container(
           height: 54,
@@ -184,7 +194,7 @@ class _classement_pageState extends State<ClassementPage> {
             Expanded(
                 flex: 3,
                 child: Text(
-                  score.score.toString(), //ICI
+                  m.toString() + ":" + s.toString(), //ICI
                   style: const TextStyle(fontSize: 20.0, color: Colors.white),
                   textAlign: TextAlign.center,
                 )),

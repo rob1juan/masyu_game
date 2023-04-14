@@ -18,8 +18,9 @@ void main() async {
       '/data/user/0/com.example.masyu_game/app_flutter/score_board.db';
   var databaseFactory = databaseFactoryFfi;
   final db = await databaseFactory.openDatabase(dbPath);
+  //await db.execute('DROP TABLE IF EXISTS `score`;');
   await db.execute(
-      'CREATE TABLE IF NOT EXISTS score(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, score REAL, level INTEGER)');
+      'CREATE TABLE IF NOT EXISTS score(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, score REAL, level INTEGER, difficulty INTEGER)');
   await db.close();
 
   runApp(MasyuApp());

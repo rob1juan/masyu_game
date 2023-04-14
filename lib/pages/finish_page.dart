@@ -4,16 +4,24 @@ import 'package:masyu_game/Theme/Buttons.dart';
 import 'package:masyu_game/Theme/Layout.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:clipboard/clipboard.dart';
-
+import 'package:masyu_game/core/score_board_utils.dart';
+import 'package:masyu_game/models/score_board_entry_model.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:masyu_game/widgets/background_audio.dart';
 import 'package:masyu_game/pages/music_preferences.dart';
+import 'package:masyu_game/pages/classement_page.dart';
 
 class FinishPage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
   final Duration elapsedTime;
+  int level;
+  int difficulty;
 
-  FinishPage({required this.isPlaying, required this.elapsedTime});
+  FinishPage(
+      {required this.isPlaying,
+      required this.elapsedTime,
+      required this.level,
+      required this.difficulty});
 
   @override
   _FinishPageState createState() => _FinishPageState();
@@ -117,6 +125,39 @@ class _FinishPageState extends State<FinishPage> {
     }
   }
 
+  Future<void> displayScoreBoard(BuildContext context) async {
+    String playerName = _textController.text;
+
+    if (playerName.isEmpty) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ClassementPage(
+                    isPlaying: widget.isPlaying,
+                    level: widget.level,
+                    difficulty: widget.difficulty,
+                    id: -1,
+                  )));
+    } else {
+      double score = widget.elapsedTime.inMinutes.toDouble() +
+          (widget.elapsedTime.inSeconds.toDouble() % 60) / 60;
+      int id = await saveScore(ScoreBoardEntry(
+          name: playerName,
+          score: score,
+          level: widget.level,
+          difficulty: widget.difficulty));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ClassementPage(
+                    isPlaying: widget.isPlaying,
+                    level: widget.level,
+                    difficulty: widget.difficulty,
+                    id: id,
+                  )));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Récupérer la taille de l'écran
@@ -202,12 +243,7 @@ class _FinishPageState extends State<FinishPage> {
                 ElevatedButton(
                   onPressed: () {
                     playButtonSound();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              LevelSelectionPage(isPlaying: widget.isPlaying)),
-                    );
+                    displayScoreBoard(context);
                   },
                   child: const Text('VALIDER'),
                   style: SuccessButton(context),

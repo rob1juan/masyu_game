@@ -12,8 +12,11 @@ import 'package:masyu_game/pages/music_preferences.dart';
 
 class GamePage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
+  final int level;
+  final int difficulty;
 
-  GamePage({required this.isPlaying});
+  GamePage(
+      {required this.isPlaying, required this.level, required this.difficulty});
   @override
   _GamePageState createState() => _GamePageState();
 }
@@ -22,6 +25,7 @@ class _GamePageState extends State<GamePage> {
   Duration _elapsedTime = Duration.zero;
   final backgroundPlayer = AudioPlayer();
   final buttonPlayer = AudioPlayer();
+  late GameBoard gameBoard;
 
   void startBackgroundMusic(BuildContext context) async {
     final player = BackgroundAudio.of(context).backgroundPlayer;
@@ -65,6 +69,7 @@ class _GamePageState extends State<GamePage> {
   @override
   void initState() {
     super.initState();
+    gameBoard = GameBoard(level: widget.level, difficulty: widget.difficulty);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startBackgroundMusic(context);
     });
@@ -87,8 +92,9 @@ class _GamePageState extends State<GamePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      LevelSelectionPage(isPlaying: widget.isPlaying)),
+                  builder: (context) => LevelSelectionPage(
+                      isPlaying: widget.isPlaying,
+                      difficulty: widget.difficulty)),
             );
           },
         ),
@@ -124,7 +130,7 @@ class _GamePageState extends State<GamePage> {
                   color: Color.fromARGB(40, 255, 255, 255)),
               child: Padding(
                 padding: EdgeInsets.all(10.0),
-                child: GameBoard(),
+                child: gameBoard,
               ),
             ),
           ),
@@ -132,17 +138,20 @@ class _GamePageState extends State<GamePage> {
           ElevatedButton(
             onPressed: () {
               playButtonSound();
-              widget.isPlaying.value = false;
-              musicStop();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FinishPage(
-                    isPlaying: widget.isPlaying,
-                    elapsedTime: _elapsedTime,
+              if (gameBoard.plateau!.GameIsValide()) {
+                widget.isPlaying.value = false;
+                musicStop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FinishPage(
+                        isPlaying: widget.isPlaying,
+                        elapsedTime: _elapsedTime,
+                        level: widget.level,
+                        difficulty: widget.difficulty),
                   ),
-                ),
-              );
+                );
+              }
             },
             child: Text("VALIDER"),
             style: SuccessButton(context),
@@ -151,12 +160,7 @@ class _GamePageState extends State<GamePage> {
           ElevatedButton(
             onPressed: () {
               playButtonSound();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        GamePage(isPlaying: widget.isPlaying)),
-              );
+              gameBoard.plateau!.ResetLines();
             },
             child: Text("RECOMMENCER"),
             style: DangerButton(context),
