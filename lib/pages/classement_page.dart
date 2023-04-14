@@ -161,8 +161,8 @@ class _classement_pageState extends State<ClassementPage> {
 
   Widget ScoreRow(
       BuildContext context, int index, ScoreBoardEntry score, bool isActual) {
-    int m = (score.score * 100 ~/ 60).floor();
-    int s = (score.score * 100 - m * 60).floor();
+    int m = (score.score * 60 ~/ 60).floor();
+    int s = (score.score * 60 - m * 60).floor();
     return Column(children: [
       Container(
           height: 54,
