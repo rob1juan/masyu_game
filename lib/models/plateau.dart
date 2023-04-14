@@ -23,6 +23,24 @@ class Plateau {
     validPath = false;
   }
 
+  void ResetLines() {
+    lines.clear();
+  }
+
+  bool GameIsValide() {
+    if (!isPathValid(lines)) {
+      return false;
+    }
+    for (int i = 0; i < taille; i++) {
+      for (int j = 0; j < taille; j++) {
+        if (!grille[j][i].isValide) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   static Future<Plateau?> loadFromJson(int id, int difficulty) async {
     // Charger le JSON depuis les assets
     final jsonStr = await rootBundle.loadString('assets/maps.json');

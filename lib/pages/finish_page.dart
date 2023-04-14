@@ -15,11 +15,13 @@ class FinishPage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
   final Duration elapsedTime;
   int level;
+  int difficulty;
 
   FinishPage(
       {required this.isPlaying,
       required this.elapsedTime,
-      required this.level});
+      required this.level,
+      required this.difficulty});
 
   @override
   _FinishPageState createState() => _FinishPageState();
@@ -131,21 +133,28 @@ class _FinishPageState extends State<FinishPage> {
           context,
           MaterialPageRoute(
               builder: (context) => ClassementPage(
-                  isPlaying: widget.isPlaying,
-                  elapsedTime: widget.elapsedTime,
-                  level: widget.level)));
+                    isPlaying: widget.isPlaying,
+                    level: widget.level,
+                    difficulty: widget.difficulty,
+                    id: -1,
+                  )));
     } else {
       double score = widget.elapsedTime.inMinutes.toDouble() +
           (widget.elapsedTime.inSeconds.toDouble() % 60) / 60;
-      int id = await saveScore(
-          ScoreBoardEntry(name: playerName, score: score, level: widget.level));
+      int id = await saveScore(ScoreBoardEntry(
+          name: playerName,
+          score: score,
+          level: widget.level,
+          difficulty: widget.difficulty));
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => ClassementPage(
-                  isPlaying: widget.isPlaying,
-                  elapsedTime: widget.elapsedTime,
-                  level: widget.level)));
+                    isPlaying: widget.isPlaying,
+                    level: widget.level,
+                    difficulty: widget.difficulty,
+                    id: id,
+                  )));
     }
   }
 
@@ -234,12 +243,7 @@ class _FinishPageState extends State<FinishPage> {
                 ElevatedButton(
                   onPressed: () {
                     playButtonSound();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              LevelSelectionPage(isPlaying: widget.isPlaying)),
-                    );
+                    displayScoreBoard(context);
                   },
                   child: const Text('VALIDER'),
                   style: SuccessButton(context),

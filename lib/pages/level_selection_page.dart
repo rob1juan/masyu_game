@@ -115,8 +115,10 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                GamePage(isPlaying: widget.isPlaying)),
+                            builder: (context) => GamePage(
+                                isPlaying: widget.isPlaying,
+                                level: 1,
+                                difficulty: widget.difficulty)),
                       );
                     },
                     child: Text('NIVEAU 1'),
@@ -126,6 +128,15 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
                   ElevatedButton(
                     onPressed: () {
                       playButtonSound();
+                      widget.isPlaying.value = false;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GamePage(
+                                isPlaying: widget.isPlaying,
+                                level: 2,
+                                difficulty: widget.difficulty)),
+                      );
                     },
                     child: Text('NIVEAU 2'),
                     style: PrimaryButton(context),
@@ -134,6 +145,15 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
                   ElevatedButton(
                     onPressed: () {
                       playButtonSound();
+                      widget.isPlaying.value = false;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GamePage(
+                                isPlaying: widget.isPlaying,
+                                level: 3,
+                                difficulty: widget.difficulty)),
+                      );
                     },
                     child: Text('NIVEAU 3'),
                     style: PrimaryButton(context),
@@ -142,6 +162,15 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
                   ElevatedButton(
                     onPressed: () {
                       playButtonSound();
+                      widget.isPlaying.value = false;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GamePage(
+                                isPlaying: widget.isPlaying,
+                                level: 4,
+                                difficulty: widget.difficulty)),
+                      );
                     },
                     child: Text('NIVEAU 4'),
                     style: PrimaryButton(context),
@@ -159,11 +188,10 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ClassementPage(
-                            level: 99,
+                            level: 1,
+                            difficulty: widget.difficulty,
                             isPlaying: widget.isPlaying,
-                            elapsedTime: Duration(
-                                seconds:
-                                    0), // Change this to the actual elapsed time
+                            id: -1, // Change this to the actual elapsed time
                           ),
                         ),
                       );
@@ -181,6 +209,17 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
                   ElevatedButton(
                     onPressed: () {
                       playButtonSound();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ClassementPage(
+                            level: 2,
+                            difficulty: widget.difficulty,
+                            isPlaying: widget.isPlaying,
+                            id: -1, // Change this to the actual elapsed time
+                          ),
+                        ),
+                      );
                     },
                     child: Image.asset(
                       'assets/poduim.png',
@@ -195,6 +234,17 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
                   ElevatedButton(
                     onPressed: () {
                       playButtonSound();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ClassementPage(
+                            level: 3,
+                            difficulty: widget.difficulty,
+                            isPlaying: widget.isPlaying,
+                            id: -1, // Change this to the actual elapsed time
+                          ),
+                        ),
+                      );
                     },
                     child: Image.asset(
                       'assets/poduim.png',
@@ -209,6 +259,17 @@ class _LevelSelectionPageState extends State<LevelSelectionPage> {
                   ElevatedButton(
                     onPressed: () {
                       playButtonSound();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ClassementPage(
+                            level: 4,
+                            difficulty: widget.difficulty,
+                            isPlaying: widget.isPlaying,
+                            id: -1, // Change this to the actual elapsed time
+                          ),
+                        ),
+                      );
                     },
                     child: Image.asset(
                       'assets/poduim.png',
