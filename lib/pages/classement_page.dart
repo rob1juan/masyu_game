@@ -104,7 +104,7 @@ class _classement_pageState extends State<ClassementPage> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        players.length - 1 > 0
+                        players.length - (widget.id != -1 ? 1 : 0) > 0
                             ? Container(
                                 height: 60 * 5,
                                 child: ScrollConfiguration(
