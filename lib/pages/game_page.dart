@@ -26,6 +26,8 @@ class _GamePageState extends State<GamePage> {
   final backgroundPlayer = AudioPlayer();
   final buttonPlayer = AudioPlayer();
   late GameBoard gameBoard;
+  int level = 1;
+
 
   void startBackgroundMusic(BuildContext context) async {
     final player = BackgroundAudio.of(context).backgroundPlayer;
@@ -70,6 +72,7 @@ class _GamePageState extends State<GamePage> {
   void initState() {
     super.initState();
     gameBoard = GameBoard(level: widget.level, difficulty: widget.difficulty);
+    level = widget.level;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startBackgroundMusic(context);
     });
@@ -105,7 +108,7 @@ class _GamePageState extends State<GamePage> {
         children: [
           SizedBox(height: 20),
           Text(
-            "Niveau ...",
+            "Niveau " + level.toString(),
             style: TextStyle(color: Colors.white, fontSize: 24),
           ),
           SizedBox(height: 30),
