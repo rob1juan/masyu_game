@@ -132,8 +132,8 @@ class _classement_pageState extends State<ClassementPage> {
                             : SizedBox(),
                         SizedBox(height: verticalSpacing * 0.2),
                         widget.id != -1 && currentRank > 5
-                            ? ScoreRow(context, players.length,
-                                players[players.length - 1], true)
+                            ? ScoreRow(context, currentRank,
+                                players[currentRank - 1], true)
                             : SizedBox(),
                       ]),
                 )
