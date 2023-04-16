@@ -10,6 +10,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:masyu_game/widgets/background_audio.dart';
 import 'package:masyu_game/pages/music_preferences.dart';
 import 'package:masyu_game/pages/classement_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FinishPage extends StatefulWidget {
   final ValueNotifier<bool> isPlaying;
@@ -28,7 +29,8 @@ class FinishPage extends StatefulWidget {
 }
 
 class _FinishPageState extends State<FinishPage> {
-  final TextEditingController _textController = TextEditingController();
+  var prefs;
+  TextEditingController _textController = TextEditingController();
 
   final backgroundPlayer = AudioPlayer();
   final buttonPlayer = AudioPlayer();
@@ -79,6 +81,17 @@ class _FinishPageState extends State<FinishPage> {
     });
   }
 
+  Future<void> initTextController() async {
+    prefs = await SharedPreferences.getInstance();
+    String playerName;
+    if (prefs.containsKey('playerName')) {
+      playerName = await prefs.getString('playerName');
+      setState(() {
+        _textController = TextEditingController(text: playerName);
+      });
+    }
+  }
+
   @override
   void dispose() {
     backgroundPlayer.dispose();
@@ -89,6 +102,7 @@ class _FinishPageState extends State<FinishPage> {
   @override
   void initState() {
     super.initState();
+    initTextController();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await finishBackgroundMusic();
     });
@@ -241,6 +255,7 @@ class _FinishPageState extends State<FinishPage> {
                 ElevatedButton(
                   onPressed: () {
                     playButtonSound();
+                    prefs.setString('playerName', _textController.text);
                     displayScoreBoard(context);
                   },
                   child: const Text('VALIDER'),
