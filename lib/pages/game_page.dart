@@ -28,7 +28,6 @@ class _GamePageState extends State<GamePage> {
   late GameBoard gameBoard;
   int level = 1;
 
-
   void startBackgroundMusic(BuildContext context) async {
     final player = BackgroundAudio.of(context).backgroundPlayer;
     final isPlaying = BackgroundAudio.of(context).isPlaying;
@@ -163,7 +162,10 @@ class _GamePageState extends State<GamePage> {
           ElevatedButton(
             onPressed: () {
               playButtonSound();
-              gameBoard.plateau!.ResetLines();
+              setState(() {
+                gameBoard.plateau!.ResetLines();
+                gameBoard.plateau!.CheckValidity();
+              });
             },
             child: Text("RECOMMENCER"),
             style: DangerButton(context),
