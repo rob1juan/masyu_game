@@ -29,7 +29,7 @@ class _classement_pageState extends State<ClassementPage> {
   List<ScoreBoardEntry> players = List.empty(growable: true);
 
   Future<dynamic> fetchData() async {
-    final scores = await getScores(widget.level, widget.difficulty);
+    final scores = await getScores(widget.level, widget.difficulty, widget.id);
     setState(() {
       players = scores;
     });
