@@ -11,26 +11,39 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../models/score_board_entry_model.dart';
 
-Future<List<ScoreBoardEntry>> getScores(int level, int difficulty) async {
+Future<ScoreBoardData> getScores(
+    int level, int difficulty, int id) async {
   var databaseFactory = databaseFactoryFfi;
   final dbPath =
       '/data/user/0/com.example.masyu_game/app_flutter/score_board.db';
 
   final db = await databaseFactory.openDatabase(dbPath);
 
-  final List<Map<String, dynamic>> maps = await db.query('score',
+  List<Map<String, dynamic>> maps = [];
+
+  List<Map<String, dynamic>> mapsTmp = await db.query('score',
       where: 'level = ? AND difficulty = ?',
       whereArgs: [level, difficulty],
       orderBy: 'score');
+  int currentPosition = 0;
+  int cpt = 0;
+  for (dynamic score in mapsTmp) {
+    cpt++;
+    if (score['id'] == id) {
+      currentPosition = cpt;
+    }
+    maps.add(score);
+  }
 
   await db.close();
-  return List.generate(maps.length, (i) {
+  List<ScoreBoardEntry> scores =  List.generate(maps.length, (i) {
     return ScoreBoardEntry(
         name: maps[i]['name'],
         score: maps[i]['score'],
         level: maps[i]['level'],
         difficulty: maps[i]['difficulty']);
   });
+  return ScoreBoardData(scores: scores, currentRank: currentPosition);
 }
 
 Future<int> saveScore(ScoreBoardEntry score) async {

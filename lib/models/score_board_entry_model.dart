@@ -24,3 +24,12 @@ class ScoreBoardEntry {
     return 'Score{name: $name, score: $score, level: $level, difficulty: $difficulty}';
   }
 }
+
+class ScoreBoardData {
+  final List<ScoreBoardEntry> scores;
+  final int currentRank;
+
+  const ScoreBoardData(
+      {required this.scores,
+      required this.currentRank});
+}

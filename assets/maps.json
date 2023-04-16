@@ -289,16 +289,6 @@
                     "type": "filled"
                 },
                 {
-                    "x": 1,
-                    "y": 5,
-                    "type": "filled"
-                },
-                {
-                    "x": 2,
-                    "y": 0,
-                    "type": "filled"
-                },
-                {
                     "x": 2,
                     "y": 1,
                     "type": "filled"
@@ -464,11 +454,6 @@
                 },
                 {
                     "x": 6,
-                    "y": 2,
-                    "type": "filled"
-                },
-                {
-                    "x": 7,
                     "y": 2,
                     "type": "filled"
                 }

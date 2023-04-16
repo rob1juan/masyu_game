@@ -142,43 +142,26 @@ class _GamePageState extends State<GamePage> {
                       child: gameBoard,
                     ),
                   ),
-                ),
-              ),
-              Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  playButtonSound();
-                  if (gameBoard.plateau!.GameIsValide()) {
-                    widget.isPlaying.value = false;
-                    musicStop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FinishPage(
-                            isPlaying: widget.isPlaying,
-                            elapsedTime: _elapsedTime,
-                            level: widget.level,
-                            difficulty: widget.difficulty),
-                      ),
-                    );
-                  }
-                },
-                child: Text("VALIDER"),
-                style: SuccessButton(context),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  playButtonSound();
-                  gameBoard.plateau!.ResetLines();
-                },
-                child: Text("RECOMMENCER"),
-                style: DangerButton(context),
-              ),
-              SizedBox(height: 70),
-            ],
-          );
-        },
+                );
+              }
+            },
+            child: Text("VALIDER"),
+            style: SuccessButton(context),
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              playButtonSound();
+              setState(() {
+                gameBoard.plateau!.ResetLines();
+                gameBoard.plateau!.CheckValidity();
+              });
+            },
+            child: Text("RECOMMENCER"),
+            style: DangerButton(context),
+          ),
+          SizedBox(height: 20),
+        ],
       ))
     ]));
   }

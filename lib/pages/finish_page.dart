@@ -132,11 +132,9 @@ class _FinishPageState extends State<FinishPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ClassementPage(
+              builder: (context) => LevelSelectionPage(
                     isPlaying: widget.isPlaying,
-                    level: widget.level,
                     difficulty: widget.difficulty,
-                    id: -1,
                   )));
     } else {
       double score = widget.elapsedTime.inMinutes.toDouble() +

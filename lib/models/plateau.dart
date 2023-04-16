@@ -35,6 +35,11 @@ class Plateau {
       for (int j = 0; j < taille; j++) {
         if (!grille[j][i].isValide) {
           return false;
+        } else if (grille[j][i].type == CaseType.Circle ||
+            grille[j][i].type == CaseType.Filled) {
+          if (findAdjacentLines(grille[j][i].position).length < 2) {
+            return false;
+          }
         }
       }
     }
