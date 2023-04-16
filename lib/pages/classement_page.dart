@@ -27,11 +27,13 @@ class ClassementPage extends StatefulWidget {
 
 class _classement_pageState extends State<ClassementPage> {
   List<ScoreBoardEntry> players = List.empty(growable: true);
+  int currentRank = 0;
 
   Future<dynamic> fetchData() async {
     final scores = await getScores(widget.level, widget.difficulty, widget.id);
     setState(() {
-      players = scores;
+      players = scores.scores;
+      currentRank = scores.currentRank;
     });
   }
 
@@ -104,26 +106,23 @@ class _classement_pageState extends State<ClassementPage> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        players.length - (widget.id != -1 ? 1 : 0) > 0
+                        players.isNotEmpty
                             ? Container(
                                 height: 60 * 5,
                                 child: ScrollConfiguration(
                                   behavior: ScrollConfiguration.of(context)
                                       .copyWith(scrollbars: false),
                                   child: ListView.builder(
-                                      itemCount: players.length -
-                                          (widget.id != -1
-                                              ? 1
-                                              : 0), // nombre d'éléments dans la liste
+                                      itemCount: players.length, // nombre d'éléments dans la liste
                                       itemBuilder: (context, index) => ScoreRow(
                                           context,
                                           index + 1,
                                           players[index],
-                                          false)),
+                                          index + 1 == currentRank)),
                                 ),
                               )
                             : SizedBox(height: 60 * 5),
-                        widget.id != -1
+                        currentRank != 0 && currentRank > 5
                             ? Divider(
                                 color: Colors.white.withOpacity(0.35),
                               )
@@ -131,7 +130,7 @@ class _classement_pageState extends State<ClassementPage> {
                         const SizedBox(
                           height: 6,
                         ),
-                        widget.id != -1
+                        widget.id != -1 && currentRank > 5
                             ? ScoreRow(context, players.length,
                                 players[players.length - 1], true)
                             : SizedBox(),

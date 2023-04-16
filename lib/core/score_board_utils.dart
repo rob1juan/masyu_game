@@ -11,7 +11,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../models/score_board_entry_model.dart';
 
-Future<List<ScoreBoardEntry>> getScores(
+Future<ScoreBoardData> getScores(
     int level, int difficulty, int id) async {
   var databaseFactory = databaseFactoryFfi;
   final dbPath =
@@ -25,26 +25,25 @@ Future<List<ScoreBoardEntry>> getScores(
       where: 'level = ? AND difficulty = ?',
       whereArgs: [level, difficulty],
       orderBy: 'score');
-  dynamic scoreTmp = null;
+  int currentPosition = 0;
+  int cpt = 0;
   for (dynamic score in mapsTmp) {
+    cpt++;
     if (score['id'] == id) {
-      scoreTmp = score;
-    }else{
-      maps.add(score);
+      currentPosition = cpt;
     }
-  }
-  if(scoreTmp != null){
-    maps.add(scoreTmp);
+    maps.add(score);
   }
 
   await db.close();
-  return List.generate(maps.length, (i) {
+  List<ScoreBoardEntry> scores =  List.generate(maps.length, (i) {
     return ScoreBoardEntry(
         name: maps[i]['name'],
         score: maps[i]['score'],
         level: maps[i]['level'],
         difficulty: maps[i]['difficulty']);
   });
+  return ScoreBoardData(scores: scores, currentRank: currentPosition);
 }
 
 Future<int> saveScore(ScoreBoardEntry score) async {
