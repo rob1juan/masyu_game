@@ -101,46 +101,56 @@ class _GamePageState extends State<GamePage> {
           },
         ),
       ),
-      Center(child: LayoutBuilder(
-        builder: (context, constraints) {
-          final double size = constraints.maxWidth < constraints.maxHeight
-              ? constraints.maxWidth
-              : constraints.maxHeight;
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 50),
-              Text(
-                "Niveau " + level.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 24),
+      Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 50),
+          Text(
+            "Niveau " + level.toString(),
+            style: TextStyle(color: Colors.white, fontSize: 24),
+          ),
+          SizedBox(height: 30),
+          Text(
+            "Temps",
+            style: TextStyle(color: Colors.white, fontSize: 24),
+          ),
+          StopwatchText(
+            onElapsedChanged: (elapsed) {
+              setState(() {
+                _elapsedTime = elapsed;
+              });
+            },
+          ),
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Container(
+              height: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromARGB(40, 255, 255, 255)),
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: gameBoard,
               ),
-              SizedBox(height: 30),
-              Text(
-                "Temps",
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-              StopwatchText(
-                onElapsedChanged: (elapsed) {
-                  setState(() {
-                    _elapsedTime = elapsed;
-                  });
-                },
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                    height: size,
-                    width: size,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromARGB(40, 255, 255, 255)),
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: gameBoard,
-                    ),
+            ),
+          ),
+          Spacer(),
+          ElevatedButton(
+            onPressed: () {
+              playButtonSound();
+              if (gameBoard.plateau!.GameIsValide()) {
+                widget.isPlaying.value = false;
+                musicStop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FinishPage(
+                        isPlaying: widget.isPlaying,
+                        elapsedTime: _elapsedTime,
+                        level: widget.level,
+                        difficulty: widget.difficulty),
                   ),
                 );
               }
@@ -160,7 +170,7 @@ class _GamePageState extends State<GamePage> {
             child: Text("RECOMMENCER"),
             style: DangerButton(context),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 50),
         ],
       ))
     ]));
